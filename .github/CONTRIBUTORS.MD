@@ -5,3 +5,5 @@ Please add your name (First Name Last Name)
 -->
 - [Miguel Merlin](https://github.com/miguel-merlin)
 - [Eric Zhu](https://ericz.me)
+- [Liam Rust](https://github.com/The-L3mur)
+
