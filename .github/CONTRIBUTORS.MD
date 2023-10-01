@@ -5,4 +5,3 @@ Please add your name (First Name Last Name)
 -->
 - [Miguel Merlin](https://github.com/miguel-merlin)
 - [Eric Zhu](https://ericz.me)
-- [Arnav Marchareddy](https://github.com/Arnavpmr)
