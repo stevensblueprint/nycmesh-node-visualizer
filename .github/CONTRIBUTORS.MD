@@ -7,4 +7,4 @@ Please add your name (First Name Last Name)
 - [Eric Zhu](https://ericz.me)
 - [Liam Rust](https://github.com/The-L3mur)
 - [Arnav Marchareddy](https://github.com/Arnavpmr)
-
+- [Joshua Gorman](https://github.com/endevii)
