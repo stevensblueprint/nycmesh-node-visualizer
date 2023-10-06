@@ -1,0 +1,18 @@
+{
+  "name": "nycmesh-node-visualizer",
+  "version": "1.0.0",
+  "description": "NYCMesh is a community-driven, decentralized wireless network initiative based in New York City. It aims to provide affordable and accessible internet connectivity to residents and businesses by creating a mesh network. In a mesh network, individual nodes (routers) connect to each other, forming a web-like structure that can transmit data across the network without relying solely on traditional Internet service providers (ISPs).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "lint-staged": {
+    "./client/src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [      
+      "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
+      "prettier --write"
+    ]
+  }
+}

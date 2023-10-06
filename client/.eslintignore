@@ -1,0 +1,6 @@
+.eslintrc.js
+.gitignore
+.prettierignore
+*.json
+public/*
+pretter.config.js
