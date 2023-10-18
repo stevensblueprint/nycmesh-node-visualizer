@@ -1,11 +1,10 @@
-import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+'use client'
+import { MapContainer, TileLayer } from 'react-leaflet';
 import "leaflet/dist/leaflet.css";
-import "./App.css";
 
-function App() {
+export default function Home() {
   return (
-    <div className="App">
+    <>
       <MapContainer
         style={{
           height: 800,
@@ -24,8 +23,6 @@ function App() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
       </MapContainer>
-    </div>
-  );
+    </>
+  )
 }
-
-export default App;
