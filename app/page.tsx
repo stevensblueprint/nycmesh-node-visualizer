@@ -1,6 +1,6 @@
-'use client'
+'use client';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import "leaflet/dist/leaflet.css";
+import 'leaflet/dist/leaflet.css';
 
 export default function Home() {
   return (
@@ -11,8 +11,8 @@ export default function Home() {
           margin: 10,
           padding: 0,
           borderRadius: 10,
-          border: "4px solid black",
-          boxShadow: "0 0 20px #ccc",
+          border: '4px solid black',
+          boxShadow: '0 0 20px #ccc',
         }}
         center={[40.73061, -73.935242]}
         zoom={13}
@@ -24,5 +24,5 @@ export default function Home() {
         />
       </MapContainer>
     </>
-  )
+  );
 }
