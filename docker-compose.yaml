@@ -3,10 +3,10 @@ services:
   postgres:
     image: postgres:latest
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: your_username
-      POSTGRES_PASSWORD: your_password
-      POSTGRES_DB: your_database
+      - POSTGRES_DB=nycmesh
     ports:
       - 5432:5432
     volumes:
