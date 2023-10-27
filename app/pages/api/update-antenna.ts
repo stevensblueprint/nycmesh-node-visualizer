@@ -32,8 +32,12 @@ export default async function handler(
       const id = req.query;
       const { heading, radius } = req.body as AntennaUpdateRequest;
 
-      const query =
-        'UPDATE antennas SET heading = $1, radius = $2 WHERE id = $3 RETURNING *';
+      const query = `
+      UPDATE Antennas AS a
+      JOIN SectorLobes AS s ON a.sectorLobe = s.sector_lobe_id
+      SET a.heading = $1, s.radius = $2
+      WHERE a.id = $3
+      RETURNING a.id, a.heading, s.radius`;
 
       const result = await client.query(query, [heading, radius, id]);
 
