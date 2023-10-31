@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=nycmesh
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  initdb:
+    image: postgres:latest
+    depends_on:
+      - postgres
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
