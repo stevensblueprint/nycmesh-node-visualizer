@@ -1,0 +1,28 @@
+name: Lint and format check
+on: [pull_request]
+jobs:
+  prettier:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run prettier -check
+        run: |
+          npm ci
+          npm run format
+
+  eslint:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run eslint
+        run: |
+          npm ci
+          npm run lint
