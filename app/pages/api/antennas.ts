@@ -12,7 +12,10 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const client = await pool.connect();
     const result = await client.query('SELECT * FROM antennas');
