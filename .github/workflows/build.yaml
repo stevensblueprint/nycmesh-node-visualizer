@@ -1,0 +1,38 @@
+name: build-and-publish
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    types: [opened, reopened]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  
+jobs: 
+  lint: 
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: Checkout 
+      uses: actions/checkout@v4
+
+      - name: Run-Lint-Staged
+      run: npx lint-staged 
+  publish-docker: 
+  needs: lint
+    runs-on: ubuntu-latest
+   steps: 
+    - name: Checkout
+    uses: actions/checkout@4
+    - name: Login to Container Registry
+    uses: docker/login-action@v4
+    with: 
+    registry: ghcr.io
+    username: ${{ github.actor }}
+    password: ${{ secrets.GITHUB_TOKEN }} 
+    - name: Build and Push Image
+    run: |
+    docker compose -p nycmesh-node-visualizer up
+    docker push ghcr.io/stevensblueprint/nycmesh-node-visualizer:latest 
