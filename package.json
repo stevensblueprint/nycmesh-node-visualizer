@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "unittest": "jest --watch",
+    "unittest": "jest --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
     "integrationtest": "npx cypress open"
   },
   "dependencies": {
@@ -26,8 +26,10 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
+    "@babel/preset-env": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
     "@jest/globals": "^29.7.0",
+    "@playwright/test": "^1.39.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/leaflet": "^1.9.6",
@@ -38,6 +40,7 @@
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "autoprefixer": "^10",
+    "babel-jest": "^29.7.0",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "eslint-config-prettier": "^9.0.0",
