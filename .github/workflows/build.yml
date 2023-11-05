@@ -1,23 +1,14 @@
-name: build and publish dockerfile
+name: test build
 on:
   push:
-    branches: ["main"]
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Login to GitHub Container Registry
-      uses: docker/login-action@v2
-      with:
-        registry: ghcr.io
-        username: "JonMike8"
-        password: ${{ secrets.ACCESS_TOKEN }}
-
-    - name: Build and Push Docker Image
-      uses: docker/build-push-action@v4
-      with:
-        push: true
-        tags: |
-          ghcr.io/stevensblueprint/nycmesh-node-visualizer:${{ github.sha }}
-          ghcr.io/stevensblueprint/nycmesh-node-visualizer:latest
+      - uses: actions/checkout@v4
+      - name: 
+        run: |
+          npm ci
+          npm run build
