@@ -9,7 +9,10 @@
     "lint": "next lint",
     "prepare": "husky install",
     "unittest": "jest --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
-    "integrationtest": "npx cypress open"
+    "integrationtest": "npx cypress open",
+    "format": "prettier --check ./app",
+    "format:fix": "prettier --write ./app",
+    "prepare": "husky install"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -17,8 +20,8 @@
     "dotenv": "^16.3.1",
     "leaflet": "^1.9.4",
     "lint-staged": "^15.0.2",
-    "next": "13.5.4",
     "pg": "^8.11.3",
+    "next": "14.0.1",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -42,7 +45,7 @@
     "autoprefixer": "^10",
     "babel-jest": "^29.7.0",
     "eslint": "^8",
-    "eslint-config-next": "13.5.4",
+    "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
@@ -58,7 +61,7 @@
   "lint-staged": {
     "app/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
       "eslint app --ext .js,.jsx,.ts,.tsx --max-warnings=0",
-      "prettier --write"
+      "prettier --check"
     ]
   }
 }
