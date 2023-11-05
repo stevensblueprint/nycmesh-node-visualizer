@@ -1,4 +1,4 @@
-name: Lint and format check
+name: Link, format, and unit tests
 on:
   push:
   pull_request:
