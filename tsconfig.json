@@ -23,6 +23,12 @@
     },
     "types": ["cypress", "node"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "ts-node": {
+      "compilerOptions": {
+        "module": "ESNext",
+        "moduleResolution": "Node"
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "cypress/**/*.ts"],
   "exclude": ["node_modules"]
 }

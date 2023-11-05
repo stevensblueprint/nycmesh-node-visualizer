@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "unittest": "jest --watch"
+    "unittest": "jest --watch",
+    "integrationtest": "npx cypress open"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
     "@babel/preset-typescript": "^7.23.2",
+    "@jest/globals": "^29.7.0",
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.0.0",
     "@types/leaflet": "^1.9.6",
@@ -47,6 +49,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "tailwindcss": "^3",
+    "ts-jest": "^29.1.1",
     "typescript": "^5"
   },
   "lint-staged": {
