@@ -3,6 +3,7 @@
 //TODO: run it with the actual handlerç
 describe('/api/antennas GET endpoint', () => {
     it('returns a list of antennas', async () => {
+        //TODO: make it work with the actual endpoint
         const response = {
             body:{
                 antennas: [
@@ -12,7 +13,6 @@ describe('/api/antennas GET endpoint', () => {
                 }
             ]
             }
-            
         }
         expect(response.body).toHaveProperty('antennas');
     }
