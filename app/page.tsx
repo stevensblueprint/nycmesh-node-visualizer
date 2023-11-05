@@ -3,6 +3,10 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import dynamic from 'next/dynamic'
 import 'leaflet/dist/leaflet.css';
 
+const DynamicHeader = dynamic(() => import('../components/header'), {
+  ssr: false,
+})
+
 export default function Home() {
   return (
     <>
