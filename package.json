@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "unittest": "jest --transformIgnorePatterns \"node_modules/(?!react-leaflet)/\"",
+    "unittest": "jest",
     "integrationtest": "npx cypress open",
     "format": "prettier --check ./app",
     "format:fix": "prettier --write ./app",
