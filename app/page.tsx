@@ -1,5 +1,6 @@
 'use client';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import dynamic from 'next/dynamic'
 import 'leaflet/dist/leaflet.css';
 
 export default function Home() {
