@@ -1,0 +1,32 @@
+name: Link, format, and unit tests
+on:
+  push:
+  pull_request:
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run prettier -check
+        run: |
+          npm ci
+          npm run format
+
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run eslint
+        run: |
+          npm ci
+          npm run lint
+
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unittest
+        run: |
+          npm ci
+          npm run unittest
