@@ -25,7 +25,7 @@ git commit -m "Commit message"
 ```
 Push your changes
 ```
-git push
+git push --set-upstream origin {branch_name}
 ```
 Submit a pr.
 
