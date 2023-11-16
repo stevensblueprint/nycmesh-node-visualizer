@@ -11,25 +11,25 @@
     "unittest": "jest",
     "integrationtest": "npx cypress open",
     "format": "prettier --check ./app",
-    "format:fix": "prettier --write ./app",
-    "prepare": "husky install"
+    "format:fix": "prettier --write ./app"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "cypress": "^13.3.3",
+    "cypress": "^13.5.0",
     "dotenv": "^16.3.1",
     "leaflet": "^1.9.4",
-    "lint-staged": "^15.0.2",
+    "lint-staged": "^15.1.0",
     "pg": "^8.11.3",
     "next": "14.0.1",
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "^4.2.1"
+    "react-leaflet": "^4.2.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
-    "@babel/preset-env": "^7.23.2",
+    "@babel/preset-env": "^7.23.3",
     "@babel/preset-typescript": "^7.23.2",
     "@jest/globals": "^29.7.0",
     "@playwright/test": "^1.39.0",
@@ -40,7 +40,7 @@
     "@types/pg": "^8.10.8",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
     "@typescript-eslint/parser": "^6.10.0",
     "autoprefixer": "^10",
     "babel-jest": "^29.7.0",
