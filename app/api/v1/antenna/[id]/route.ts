@@ -13,7 +13,7 @@ export async function DELETE(_: Request, context: { params: { id: string } }) {
     const id = context.params.id;
     const client = await pool.connect();
     const result = await client.query(
-      `DELETE FROM antennas WHERE antennas.id = '${id}' RETURNING *;`
+      `DELETE FROM Antennas WHERE Antennas.id = '${id}' RETURNING *;`
     );
     if (result.rows.length === 0)
       throw {
