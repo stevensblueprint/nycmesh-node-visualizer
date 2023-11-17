@@ -1,8 +1,10 @@
 'use client';
+import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import Antennas from './Antennas';
+import SectorLobes from './SectorLobes';
 
 export default function Map() {
   return (
@@ -25,6 +27,7 @@ export default function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {/* Call anything you want to add to the map here. */}
+        <SectorLobes />
         <Antennas />
       </MapContainer>
     </>

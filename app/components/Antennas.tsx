@@ -1,7 +1,8 @@
+import React from 'react';
 import { Circle, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import access_points from '../../access_points.json'; // Put file in /app directory
+import access_points from '../../access_points.json';
 
 // Types are temporary until the API is up and running
 type AccessPoint = {
@@ -70,19 +71,18 @@ export default function Antennas() {
       <Circle
         center={[value[1].lat, value[1].lon]}
         radius={30}
-        color="red"
+        color="black"
         fillOpacity={1}
+        fillColor="red"
         key={value[0]}
       >
         {/* Create a popup which has the names of all antennas at some node */}
-        return{' '}
         <Popup>
           <div className="m-0 p-0">
             Access Points: {value[1].points.length}
             {convertPoints(value[1].points)}
           </div>
         </Popup>
-        ;
       </Circle>
     )
   );
