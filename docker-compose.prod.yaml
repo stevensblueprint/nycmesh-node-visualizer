@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d
   nycmesh-node-visualizer:
-    build: .
+    image: ghcr.io/stevensblueprint/nycmesh-node-visualizer:latest
     ports:
       - "3000:3000"
     depends_on:
