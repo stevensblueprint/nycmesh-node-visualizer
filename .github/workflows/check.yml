@@ -21,16 +21,3 @@ jobs:
         run: |
           npm ci
           npm run lint
-
-  unittest:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Start postgres
-        run: |
-          cp .env.staging .env
-          docker compose up -d
-      - name: Run unittest
-        run: |
-          npm ci
-          npm run unittest

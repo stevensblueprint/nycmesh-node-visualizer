@@ -7,18 +7,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Node 18
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: npm install
-      - name: Start postgres
-        run: |
-          cp .env.staging .env
-          docker compose up -d
+      - run: cp .env.example .env
       - name: Run tests and collect coverage
-        run: npm run unittest -- --coverage
+        run: docker compose run nycmesh-node-visualizer npm run unittest -- --coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
