@@ -9,10 +9,8 @@ export async function GET() {
     client.release();
     return NextResponse.json(antennas, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { message: 'Internal server error' },
-      { status: 500 }
-    );
+    let message = 'Internal server error';
+    if (error instanceof Error) message = error.message;
+    return NextResponse.json({ message }, { status: 500 });
   }
 }

@@ -11,7 +11,10 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }]
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ]
   },
   "ignorePatterns": [
     "package.json",
@@ -20,7 +23,11 @@
     ".prettierignore",
     "*.json",
     "public/*",
-    "pretter.config.js"
+    "*.test.js",
+    "*.test.ts",
+    "pretter.config.js",
+    "jest.config.cjs",
+    "jest.setup.ts"
   ],
 
   "parser": "@typescript-eslint/parser",
