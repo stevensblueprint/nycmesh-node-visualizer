@@ -21,6 +21,11 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
     command: npm run start
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60
 
 volumes:
   postgres_data:
