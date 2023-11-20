@@ -1,16 +1,16 @@
 export default class StatusError extends Error {
   status: number;
-  cleanup: () => unknown;
+  cleanup: () => Promise<unknown>;
 
   constructor(
     status: number,
     message: string,
-    cleanup: () => unknown = () => null
+    cleanup: () => Promise<unknown> = () => new Promise((res) => res(null))
   ) {
-    // Run cleanup to clean up any loose code when throwing error
+    // Run async cleanup to clean up any loose code when handling error
     super(message);
     this.name = 'StatusError';
     this.status = status;
-    this.cleanup = cleanup;
+    this.cleanup = async () => await cleanup();
   }
 }
