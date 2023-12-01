@@ -5,6 +5,13 @@ import 'leaflet/dist/leaflet.css';
 import access_points from '../../access_points.json';
 import { LatLngExpression } from 'leaflet';
 
+// ! Current known issues:
+// ! 1. The sectorlobes, when tuned to different headings, the look of the width changes.
+// !    This is because the way shapes are warped due to the projection of the map.
+// ! 2. The sectorLobes do not represent the actual shape of the sectorLobe.
+// !    This is because the sectorLobe is not a cone. It is an ellipse.
+// !    So their needs to be a specific algorithm which will aid in the creation of the sectorLobe based on the model of the antenna.
+
 // Types are temporary until the API is up and running
 type AccessPoint = {
   lat: number;
@@ -57,40 +64,47 @@ export default function SectorLobes() {
     reducedAntennas[val]['points'].push(antennas[i]);
   }
 
-  //   const metersToLat = (meters) => {
-  //   return meters / 110574;
-  // };
-
-  // export const metersToLng = (meters, lat) => {
-  //   return meters / (111320 * Math.cos((lat * Math.PI) / 180));
-  // };
-
   // Just plot a triangle for now
   // Triangle based on arc length of sectorlobe
   // 0.001 degrees is about 100 meters
   // Direction of triangle based on heading angle
-
   return Object.entries(reducedAntennas).map(
     (value: [string, ReducedContent]) => {
-      // const heading: number = 360;
-      // Center of the sector
-      const center = [value[1].lat, value[1].lon];
+      const center: LatLngExpression = [value[1].lat, value[1].lon];
+      const radiusInMeters: number = 100; // Adjust this as needed
+      const sectorWidth: number = 20;
+      const heading: number = 90;
+      const radiusRange: number[][] = [
+        [0, 45],
+        [45, 135],
+        [135, 225],
+        [225, 315],
+        [315, 360],
+      ];
+      let radius: number = 0;
+      if (heading < radiusRange[0][1]) {
+        // 0-45
+        radius = radiusInMeters;
+      } else if (heading < radiusRange[1][1]) {
+        // 45-135
+        radius = radiusInMeters - (radiusInMeters / 100) * 20;
+      } else if (heading < radiusRange[2][1]) {
+        // 135-225
+        radius = radiusInMeters;
+      } else if (heading < radiusRange[3][1]) {
+        // 225-315
+        radius = radiusInMeters - (radiusInMeters / 100) * 20;
+      } else if (heading < radiusRange[4][1]) {
+        // 315-360
+        radius = radiusInMeters;
+      }
+      const numberOfVertices: number = 100;
 
-      // Radius of the sector in meters
-      const radius = 120 * Math.pow(10, -5); // Change this value as needed
-      console.log(radius);
-      // const earthRadius: number = 6371000; // Earth's radius in meters
-      // const radiusInDegrees: number = radius / earthRadius;
+      // Calculate the Earth's circumference at the given latitude
+      const earthCircumferenceAtLatitude =
+        40008000 * Math.cos((center[0] * Math.PI) / 180);
 
-      // Convert radius from meters to degrees
-      // const radiusInDegrees = radius / (40008000 / 360);
-
-      // Angle range of the sector in degrees
-      const sectorWidth = 45; // Change this value as needed, this is the angle of the sector lobe
-      const heading = 270; // Heading in degrees (0-360)
-
-      // Number of vertices to create a smooth sector shape
-      const numberOfVertices = 10;
+      const scaleFactor = (radius / earthCircumferenceAtLatitude) * 360;
 
       // Calculate the latitudes and longitudes for the sector lobe
       const sectorVertices: LatLngExpression[] = Array.from(
@@ -101,16 +115,15 @@ export default function SectorLobes() {
               sectorWidth / 2 +
               (sectorWidth * index) / numberOfVertices) *
             (Math.PI / 180);
-          const lat: number = center[0] + radius * Math.sin(angle);
-          const lng: number = center[1] + radius * Math.cos(angle);
+
+          const lat: number = center[0] + scaleFactor * Math.sin(angle);
+          const lng: number = center[1] + scaleFactor * Math.cos(angle);
+
           return [lat, lng];
         }
       );
+      sectorVertices.push(center);
 
-      sectorVertices.push([value[1].lat, value[1].lon]);
-
-      console.log(sectorVertices);
-      console.log(value);
       return (
         <Polygon
           positions={sectorVertices}
@@ -121,7 +134,7 @@ export default function SectorLobes() {
         >
           <Popup>
             <div>
-              <p>{radius}</p>
+              <p>{radiusInMeters} meters</p>
               <p>{heading}</p>
             </div>
           </Popup>
