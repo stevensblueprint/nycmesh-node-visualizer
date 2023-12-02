@@ -15,12 +15,17 @@ services:
   nycmesh-node-visualizer:
     image: ghcr.io/stevensblueprint/nycmesh-node-visualizer:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - postgres
     environment:
       NODE_ENV: ${NODE_ENV}
     command: npm run start
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 60
 
 volumes:
   postgres_data:
