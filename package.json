@@ -8,8 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "unittest": "jest",
-    "integrationtest": "npx cypress open",
+    "unittest": "NODE_ENV=test jest",
+    "integrationtest": "NODE_ENV=test npx cypress open",
     "format": "prettier --check ./app",
     "format:fix": "prettier --write ./app"
   },
