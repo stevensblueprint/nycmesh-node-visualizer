@@ -15,7 +15,7 @@ services:
   nycmesh-node-visualizer:
     image: ghcr.io/stevensblueprint/nycmesh-node-visualizer:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     depends_on:
       - postgres
     environment:

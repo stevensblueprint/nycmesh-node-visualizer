@@ -1,11 +1,13 @@
 name: Codecov
 on: [push, pull_request]
+
 jobs:
   codecov:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - run: cp .env.example .env
       - name: Run tests and collect coverage
         run: docker compose run nycmesh-node-visualizer npm run unittest -- --coverage
       - name: Upload coverage reports to Codecov
