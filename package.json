@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "cypress": "^13.5.1",
+    "cypress": "^13.6.1",
     "dotenv": "^16.3.1",
     "jest-environment-node": "^29.7.0",
     "leaflet": "^1.9.4",
