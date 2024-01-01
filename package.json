@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.23.0",
-    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-env": "^7.23.7",
     "@babel/preset-typescript": "^7.23.3",
     "@jest/globals": "^29.7.0",
     "@testing-library/dom": "^9.3.3",
