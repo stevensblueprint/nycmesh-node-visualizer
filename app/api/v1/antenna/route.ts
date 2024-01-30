@@ -3,7 +3,10 @@ import { pool } from '../connection';
 
 export async function GET() {
   try {
+    console.log('Connecting...');
     const client = await pool.connect();
+    console.log('Connection Sucessful!');
+
     const result = await client.query('SELECT * FROM Antennas');
     const antennas = result.rows;
     client.release();
