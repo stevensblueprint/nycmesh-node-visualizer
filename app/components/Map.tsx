@@ -1,14 +1,31 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import Antennas from './Antennas';
 import SectorLobes from './SectorLobes';
+import AntennaInfo from './AntennaInfo';
+
+import { AccessPoint } from '../types';
 
 export default function Map() {
+  const [toggleInfo, setToggleInfo] = useState(false);
+
+  const [currentAntenna, setCurrentAntenna] = useState<AccessPoint | null>(
+    null
+  );
+
   return (
     <>
+      {toggleInfo ? (
+        <AntennaInfo
+          currentAntenna={currentAntenna}
+          setCurrentAntenna={setCurrentAntenna}
+          getToggle={toggleInfo}
+          changeToggle={() => setToggleInfo(!toggleInfo)}
+        />
+      ) : null}
       <MapContainer
         style={{
           height: 800,
@@ -28,7 +45,12 @@ export default function Map() {
         />
         {/* Call anything you want to add to the map here. */}
         <SectorLobes />
-        <Antennas />
+        <Antennas
+          currentAntenna={currentAntenna}
+          setCurrentAntenna={setCurrentAntenna}
+          getToggle={toggleInfo}
+          changeToggle={() => setToggleInfo(!toggleInfo)}
+        />
       </MapContainer>
     </>
   );

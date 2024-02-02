@@ -10,45 +10,30 @@ import SectorLobe from './SectorLobe';
 // ! 2. The sectorLobes do not represent the actual shape of the sectorLobe.
 // !    This is because the sectorLobe is not a cone. It is an ellipse.
 // !    So their needs to be a specific algorithm which will aid in the creation of the sectorLobe based on the model of the antenna.
+// ! 3. The sectorlobes do not appear if heading is at 360 degrees
 
 // Types are temporary until the API is up and running
-type AccessPoint = {
-  lat: number;
-  lon: number;
-  name: string;
-};
-
-interface ReducedContent {
-  points: [AccessPoint?];
-  lat: number;
-  lon: number;
-}
-
-interface ReducedPoints {
-  [key: string]: ReducedContent;
-}
+import { AccessPoint, ReducedPoints, ReducedContent } from '../types';
 
 export default function SectorLobes() {
-  function reduceAPs(): [AccessPoint] {
-    const reduced: [AccessPoint] = [
-      {
-        lat: 0,
-        lon: 0,
-        name: 'default',
-      },
-    ];
+  function reduceAPs(): AccessPoint[] {
+    const reduced: AccessPoint[] = [];
     for (let i: number = 0; i < access_points.length; i++) {
       const ap: AccessPoint = {
+        id: access_points[i].identification.id,
+        status: access_points[i].overview.status,
+        cpu: access_points[i].overview.cpu,
+        ram: access_points[i].overview.ram,
         lat: access_points[i].location.latitude,
         lon: access_points[i].location.longitude,
-        name: access_points[i].identification.name,
+        modelName: access_points[i].identification.modelName,
       };
       reduced.push(ap);
     }
     return reduced;
   }
 
-  const antennas: [AccessPoint] = reduceAPs();
+  const antennas: AccessPoint[] = reduceAPs();
   const reducedAntennas: ReducedPoints = {};
 
   for (let i = 0; i < antennas.length; i++) {
@@ -62,7 +47,6 @@ export default function SectorLobes() {
     }
     reducedAntennas[val]['points'].push(antennas[i]);
   }
-
   return Object.entries(reducedAntennas).map(
     (value: [string, ReducedContent]) => {
       return <SectorLobe key={value[0]} val={value[1]} />;

@@ -4,27 +4,12 @@ import 'leaflet/dist/leaflet.css';
 
 import { LatLngExpression } from 'leaflet';
 
-type AccessPoint = {
-  lat: number;
-  lon: number;
-  name: string;
-};
-
-interface ReducedContent {
-  points: [AccessPoint?];
-  lat: number;
-  lon: number;
-}
-
-interface SectorLobeProps {
-  key: string;
-  val: ReducedContent;
-}
+import { SectorLobeProps } from '../types';
 
 export default function SectorLobe({ key, val }: SectorLobeProps) {
   const center: LatLngExpression = [val.lat, val.lon];
   const [radiusInMeters, setRadiusInMeters] = useState(100); // Adjust this as needed
-  const [sectorWidth, setSectorWidth] = useState(20);
+  const [sectorWidth, setSectorWidth] = useState(45);
   const [heading, setHeading] = useState(90);
 
   // holds previous values in case they do not want to commit
@@ -89,10 +74,19 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
   }
 
   function handleChangeHeading(e: React.ChangeEvent<HTMLInputElement>) {
-    setTempHeading(Number(e.target.value));
+    let numChange: number = Number(e.target.value);
+    if (numChange < 0) {
+      numChange = 0;
+    } else if (numChange >= 360) {
+      numChange = 359;
+    }
+    setTempHeading(numChange);
   }
 
-  function handleCommit() {
+  function handleCommit(
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) {
+    e.preventDefault();
     setRadiusInMeters(tempRadius);
     setSectorWidth(tempSectorWidth);
     setHeading(tempHeading);
@@ -113,7 +107,11 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
       key={String(key)}
     >
       <Popup>
-        <div className="flex flex-col" id={`form ${String(key)}`}>
+        <form
+          className="flex flex-col"
+          id={`form ${String(key)}`}
+          onSubmit={(e) => handleCommit(e)}
+        >
           <p>Change Sector Lobe</p>
           <div className="my-2 flex flex-row">
             <label htmlFor="radius">Radius: </label>
@@ -157,7 +155,8 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
           <div className="flex flex-row justify-between">
             <button
               className="rounded-md border-[1px] border-black bg-green-300 p-1 hover:bg-green-900"
-              onClick={() => handleCommit()}
+              onClick={(e) => handleCommit(e)}
+              type="submit"
             >
               Save
             </button>
@@ -168,7 +167,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
               Cancel
             </button>
           </div>
-        </div>
+        </form>
       </Popup>
     </Polygon>
   );
