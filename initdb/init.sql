@@ -26,10 +26,13 @@ INSERT INTO SectorLobes (sector_lobe_id, modelName, angle, radius)
 VALUES
   ('sector_lobe_1', 'Model A Name', 45.0, 10.0),
   ('sector_lobe_2', 'Model B Name', 90.0, 15.0),
-  ('sector_lobe_3', 'Model C Name', 135.0, 20.0);
+  ('sector_lobe_3', 'Model C Name', 135.0, 20.0),
+  ('sector_lobe_4', 'Model D Name', 13.0, 10.0);
 
 -- Insert data into the Antennas table
 INSERT INTO Antennas (id, name, hostname, model, modelName, frequency, location, heading, sectorLobe)
 VALUES
   ('antenna_1', 'Antenna A', 'hostnameA', 'modelA', 'Model A Name', 2400, 'Location A', 90, 'sector_lobe_1'),
-  ('antenna_2', 'Antenna B', 'hostnameB', 'modelB', 'Model B Name', 5800, 'Location B', 180, 'sector_lobe_2');
+  ('antenna_2', 'Antenna B', 'hostnameB', 'modelB', 'Model B Name', 5800, 'Location B', 180, 'sector_lobe_2'),
+  ('antenna_3', 'Antenna C', 'hostnameC', 'modelC', 'Model C Name', 1234, 'Location C', 359, 'sector_lobe_3'),
+  ('antenna_4', 'Antenna D', 'hostnameD', 'modelD', 'Model D Name', 5999, 'Location D', 0, 'sector_lobe_4');
