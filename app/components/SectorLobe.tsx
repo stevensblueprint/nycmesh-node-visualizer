@@ -127,7 +127,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
             m
           </div>
           <div className="my-2 flex flex-row">
-            <label htmlFor="sectorwidth">Sector Width: </label>
+            <label htmlFor="sectorwidth">Beam Width: </label>
             <input
               className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
               type="text"
@@ -137,7 +137,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
               placeholder={String(sectorWidth)}
               onChange={(e) => handleChangeSectorWidth(e)}
             />{' '}
-            m
+            degrees
           </div>
           <div className="my-2 flex flex-row">
             <label htmlFor="heading">Heading: </label>
