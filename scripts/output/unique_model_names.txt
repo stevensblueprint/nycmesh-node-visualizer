@@ -1,0 +1,19 @@
+GigaBeam
+GigaBeam LR
+GigaBeam Plus
+LiteAP AC
+LiteAP GPS
+LiteBeam 5AC
+LiteBeam 5AC Long-Range
+NanoBeam 5AC
+NanoBeam 5AC 16
+NanoBeam 5AC 19
+PrismStation 5AC
+Rocket 5AC Prism
+Rocket Prism 5AC Gen2
+Wave AP
+airFiber 24
+airFiber 5XHD
+airFiber 60 HD
+airFiber 60 LR
+airFiber 60 XR
