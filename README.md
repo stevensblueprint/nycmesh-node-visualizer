@@ -46,3 +46,13 @@ npm run dev
 ```
 docker-compose down
 ```
+
+## How to run Unit Tests
+We use jest to perform unit testing in our application. To add a new test add it to ```tests/```.
+Since we are using docker to initialize the database, if your unit test requires the database you have to run
+the tests from the docker container.
+To do that run
+```
+docker compose run nycmesh-node-visualizer npm run unittest
+```
+After running the command you should see a log of all the unit tests.
