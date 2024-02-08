@@ -1,0 +1,19 @@
+Model: GigaBeam Beamwidth:
+Model: GigaBeam LR Beamwidth:
+Model: GigaBeam Plus Beamwidth: 2
+Model: LiteAP AC Beamwidth: 120
+Model: LiteAP GPS Beamwidth: 120
+Model: LiteBeam 5AC Beamwidth: 13
+Model: LiteBeam 5AC Long-Range Beamwidth: 13
+Model: NanoBeam 5AC Beamwidth: 90
+Model: NanoBeam 5AC 16 Beamwidth: 60
+Model: NanoBeam 5AC 19 Beamwidth: 60
+Model: PrismStation 5AC Beamwidth: 30
+Model: Rocket 5AC Prism Beamwidth:
+Model: Rocket Prism 5AC Gen2 Beamwidth:
+Model: Wave AP Beamwidth: 30
+Model: airFiber 24 Beamwidth: 6
+Model: airFiber 5XHD Beamwidth:
+Model: airFiber 60 HD Beamwidth: 3
+Model: airFiber 60 LR Beamwidth:
+Model: airFiber 60 XR Beamwidth: 1

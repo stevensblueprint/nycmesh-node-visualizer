@@ -30,7 +30,7 @@ def parse_json_and_extract_fields(json_file_path, text_file_path, unique_models_
         # Write unique model names to a file
         with open(unique_model_names_path, 'w') as model_names_file:
             for modelName in sorted(unique_model_names):  # Sorting for consistency
-                model_names_file.write(f"{modelName}\n")
+                model_names_file.write(f"Model: {modelName}\n")
 
     except FileNotFoundError:
         print(f"File not found: {json_file_path}")

@@ -152,3 +152,311 @@ nycmesh-368-west, LAP-120, LiteAP AC
 nycmesh-7512-af60lr-1933, AF60-LR, airFiber 60 LR
 nycmesh-1417-east, LAP-120, LiteAP AC
 nycmesh-1932-west-s6, PS-5AC, PrismStation 5AC
+nycmesh-511-west, LAP-120, LiteAP AC
+nycmesh-1933-east-s3, PS-5AC, PrismStation 5AC
+nycmesh-3461-northwest, LAP-120, LiteAP AC
+nycmesh-7489-east, LAP-120, LiteAP AC
+nycmesh-1635-north, LAP-120, LiteAP AC
+nycmesh-2701-gbelr-713, GBE-LR, GigaBeam LR
+nycmesh-898-west, LAP-GPS, LiteAP GPS
+nycmesh-5014-west, LAP-120, LiteAP AC
+nycmesh-1933-east-s1, PS-5AC, PrismStation 5AC
+nycmesh-1933-lbelr-1084, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-295-east, LAP-120, LiteAP AC
+nycmesh-1340-gbelr-5014, GBE-LR, GigaBeam LR
+nycmesh-7489-south, LAP-120, LiteAP AC
+nycmesh-supernode1-a1s2, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-1340-east, LAP-120, LiteAP AC
+nycmesh-1933-east-s4, LAP-120, LiteAP AC
+nycmesh-155-north, LAP-120, LiteAP AC
+nycmesh-1340-south, LAP-120, LiteAP AC
+nycmesh-713-af24-3461, AF24, airFiber 24
+nycmesh-5916-gbepNW, GBE-Plus, GigaBeam Plus
+nycmesh-511-northeast, LAP-120, LiteAP AC
+nycmesh-1932-north, LAP-120, LiteAP AC
+nycmesh-3461-northeast, LAP-120, LiteAP AC
+nycmesh-7800-east, LAP-GPS, LiteAP GPS
+nycmesh-407-north, LAP-120, LiteAP AC
+nycmesh-231-west, LAP-120, LiteAP AC
+nycmesh-2274-west, LAP-120, LiteAP AC
+nycmesh-5916-lbe-2482, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-3606-south, LAP-120, LiteAP AC
+nycmesh-713-af24-2282, AF24, airFiber 24
+ nycmesh-5916-gbep1-roof (Rob's Test GBE+), GBE-Plus, GigaBeam Plus
+nycmesh-1167-gbep-295, GBE-Plus, GigaBeam Plus
+nycmesh-7512-southeast, LAP-120, LiteAP AC
+nycmesh-383-nbe-449, NBE-5AC-19, NanoBeam 5AC 19
+nycmesh-5916-east1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-231-north, LAP-120, LiteAP AC
+nycmesh-1084-gbep-1167, GBE-Plus, GigaBeam Plus
+nycmesh-1971-northwest, LAP-120, LiteAP AC
+nycmesh-731-south, LAP-120, LiteAP AC
+nycmesh-5965-west, LAP-120, LiteAP AC
+nycmesh-1340-af60lr-5916, AF60-LR, airFiber 60 LR
+nycmesh-713-af60lr-1635, AF60-LR, airFiber 60 LR
+nycmesh-227-af24-1932, AF24, airFiber 24
+nycmesh-898-north, LAP-GPS, LiteAP GPS
+nycmesh-713-lbelr-5151, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-238-lbe-240, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-295-northwest, LAP-120, LiteAP AC
+nycmesh-898-af60lr-7800, AF60-LR, airFiber 60 LR
+nycmesh-898-gbep-135, GBE-Plus, GigaBeam Plus
+nycmesh-407-lbe-1971, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-1340-north2, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-115-northwest, LAP-120, LiteAP AC
+nycmesh-2274-northwest, LAP-120, LiteAP AC
+nycmesh-2282-southwest, LAP-GPS, LiteAP GPS
+nycmesh-317-west, LAP-120, LiteAP AC
+nycmesh-5965-north, LAP-120, LiteAP AC
+nycmesh-2482-nbe-6248, NBE-5AC-Gen2, NanoBeam 5AC
+nycmesh-sn1-northeast, PS-5AC, PrismStation 5AC
+nycmesh-7800-south, LAP-GPS, LiteAP GPS
+nycmesh-1340-west1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-5712-northeast, LAP-120, LiteAP AC
+nycmesh-231-south, LAP-120, LiteAP AC
+nycmesh-1635-southwest, LAP-120, LiteAP AC
+nycmesh-sn3-south, LAP-120, LiteAP AC
+nycmesh-5916-west1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-2282-af60lr-713, AF60-LR, airFiber 60 LR
+nycmesh-2282-southeast, LAP-GPS, LiteAP GPS
+nycmesh-1971-southwest, LAP-120, LiteAP AC
+nycmesh-1933-east-s2, PS-5AC, PrismStation 5AC
+nycmesh-1340-af5x-1417, AF-5XHD, airFiber 5XHD
+nycmesh-2463-gbep-2274, GBE-Plus, GigaBeam Plus
+nycmesh-1340-west0, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-1933-af60lr-1084, AF60-LR, airFiber 60 LR
+nycmesh-2090-west, LAP-120, LiteAP AC
+nycmesh-155-south, LAP-120, LiteAP AC
+nycmesh-1932-west-s5, PS-5AC, PrismStation 5AC
+nycmesh-7512-southwest, LAP-120, LiteAP AC
+nycmesh-5916-south2, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-731-east, LAP-120, LiteAP AC
+nycmesh-329-west, LAP-120, LiteAP AC
+nycmesh-407-south, LAP-120, LiteAP AC
+nycmesh-1340-north, LAP-120, LiteAP AC
+nycmesh-5916-lbe-3607, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-5916-waveap-south, WaveAP, Wave AP
+nycmesh-1340-lbelr-7489, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-407-east, LAP-120, LiteAP AC
+nycmesh-2090-north, LAP-120, LiteAP AC
+nycmesh-664-north, LAP-120, LiteAP AC
+nycmesh-898-south, LAP-GPS, LiteAP GPS
+nycmesh-1417-lbe-664, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-426-northwest, LAP-120, LiteAP AC
+nycmesh-2282-northwest, LAP-GPS, LiteAP GPS
+nycmesh-5916-gbe1, GBE, GigaBeam
+nycmesh-2090-southeast, LAP-120, LiteAP AC
+nycmesh-3461-southwest, LAP-120, LiteAP AC
+nycmesh-7489-west, LAP-120, LiteAP AC
+nycmesh-115-gbep-5712, GBE-Plus, GigaBeam Plus
+nycmesh-295-south, LAP-120, LiteAP AC
+nycmesh-1417-west, LAP-120, LiteAP AC
+nycmesh-supernode1-a1s1, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-5916-gbe-s-sw, GBE, GigaBeam
+nycmesh-sn1-ev, PS-5AC, PrismStation 5AC
+nycmesh-3461-waveap-north, Wave-AP, Wave AP
+nycmesh-supernode1-a1s3, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-3461-waveap-south, Wave-AP, Wave AP
+nycmesh-2282-northeast, LAP-GPS, LiteAP GPS
+nycmesh-1635-southeast, LAP-120, LiteAP AC
+nycmesh-7489-north, LAP-120, LiteAP AC
+nycmesh-5014-north, LAP-120, LiteAP AC
+nycmesh-2463-south, LAP-120, LiteAP AC
+nycmesh-5916-south1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-713-af60xr-5916, AF60-XR, airFiber 60 XR
+nycmesh-sn3-west, LAP-120, LiteAP AC
+nycmesh-1933-lbe-7512, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-2463-northeast, LAP-120, LiteAP AC
+nycmesh-6129-east, LAP-120, LiteAP AC
+nycmesh-731-north, LAP-120, LiteAP AC
+nycmesh-7800-north, LAP-GPS, LiteAP GPS
+nycmesh-3461-north, LAP-120, LiteAP AC
+nycmesh-5916-west2, PS-5AC, PrismStation 5AC
+nycmesh-sn3-north, LAP-120, LiteAP AC
+nycmesh-supernode1-a3, PS-5AC, PrismStation 5AC
+nycmesh-1340-west, LAP-120, LiteAP AC
+nycmesh-2701-southeast, LAP-120, LiteAP AC
+nycmesh-5712-south, LAP-120, LiteAP AC
+nycmesh-664-south, LAP-120, LiteAP AC
+nycmesh-6129-north, LAP-120, LiteAP AC
+nycmesh-3461-southeast, LAP-120, LiteAP AC
+nycmesh-2463-gbep-507, GBE-Plus, GigaBeam Plus
+nycmesh-3461-af60lr-5283, AF60-LR, airFiber 60 LR
+nycmesh-1340-lbe-664, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-6129-west, LAP-120, LiteAP AC
+nycmesh-1417-gbelr-3606, GBE-LR, GigaBeam LR
+nycmesh-731-gbelr-1932, GBE-LR, GigaBeam LR
+nycmesh-5965-east, LAP-120, LiteAP AC
+nycmesh-664-west, LAP-120, LiteAP AC
+nycmesh-383-lbe-329, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-713-af24-231, AF24, airFiber 24
+nycmesh-7800-west, LAP-GPS, LiteAP GPS
+nycmesh-2463-northwest, LAP-120, LiteAP AC
+nycmesh-1084-gbep-115, GBE-Plus, GigaBeam Plus
+nycmesh-1934-nbe-meshroom, NBE-5AC-16, NanoBeam 5AC 16
+nycmesh-3461-af60lr-5916, AF60-LR, airFiber 60 LR
+nycmesh-5916-northeast, PS-5AC, PrismStation 5AC
+nycmesh-2463-lbe-2090, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-1932-lbelr-2090, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-898-east, LAP-GPS, LiteAP GPS
+nycmesh-295-gbep-449, GBE-Plus, GigaBeam Plus
+nycmesh-231-east, LAP-120, LiteAP AC
+nycmesh-231-AF60HD-333, AF60HD, airFiber 60 HD
+nycmesh-368-west, LAP-120, LiteAP AC
+nycmesh-7512-af60lr-1933, AF60-LR, airFiber 60 LR
+nycmesh-1417-east, LAP-120, LiteAP AC
+nycmesh-1932-west-s6, PS-5AC, PrismStation 5AC
+nycmesh-511-west, LAP-120, LiteAP AC
+nycmesh-1933-east-s3, PS-5AC, PrismStation 5AC
+nycmesh-3461-northwest, LAP-120, LiteAP AC
+nycmesh-7489-east, LAP-120, LiteAP AC
+nycmesh-1635-north, LAP-120, LiteAP AC
+nycmesh-2701-gbelr-713, GBE-LR, GigaBeam LR
+nycmesh-898-west, LAP-GPS, LiteAP GPS
+nycmesh-5014-west, LAP-120, LiteAP AC
+nycmesh-1933-east-s1, PS-5AC, PrismStation 5AC
+nycmesh-1933-lbelr-1084, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-295-east, LAP-120, LiteAP AC
+nycmesh-1340-gbelr-5014, GBE-LR, GigaBeam LR
+nycmesh-7489-south, LAP-120, LiteAP AC
+nycmesh-supernode1-a1s2, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-1340-east, LAP-120, LiteAP AC
+nycmesh-1933-east-s4, LAP-120, LiteAP AC
+nycmesh-155-north, LAP-120, LiteAP AC
+nycmesh-1340-south, LAP-120, LiteAP AC
+nycmesh-713-af24-3461, AF24, airFiber 24
+nycmesh-5916-gbepNW, GBE-Plus, GigaBeam Plus
+nycmesh-511-northeast, LAP-120, LiteAP AC
+nycmesh-1932-north, LAP-120, LiteAP AC
+nycmesh-3461-northeast, LAP-120, LiteAP AC
+nycmesh-7800-east, LAP-GPS, LiteAP GPS
+nycmesh-407-north, LAP-120, LiteAP AC
+nycmesh-231-west, LAP-120, LiteAP AC
+nycmesh-2274-west, LAP-120, LiteAP AC
+nycmesh-5916-lbe-2482, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-3606-south, LAP-120, LiteAP AC
+nycmesh-713-af24-2282, AF24, airFiber 24
+ nycmesh-5916-gbep1-roof (Rob's Test GBE+), GBE-Plus, GigaBeam Plus
+nycmesh-1167-gbep-295, GBE-Plus, GigaBeam Plus
+nycmesh-7512-southeast, LAP-120, LiteAP AC
+nycmesh-383-nbe-449, NBE-5AC-19, NanoBeam 5AC 19
+nycmesh-5916-east1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-231-north, LAP-120, LiteAP AC
+nycmesh-1084-gbep-1167, GBE-Plus, GigaBeam Plus
+nycmesh-1971-northwest, LAP-120, LiteAP AC
+nycmesh-731-south, LAP-120, LiteAP AC
+nycmesh-5965-west, LAP-120, LiteAP AC
+nycmesh-1340-af60lr-5916, AF60-LR, airFiber 60 LR
+nycmesh-713-af60lr-1635, AF60-LR, airFiber 60 LR
+nycmesh-227-af24-1932, AF24, airFiber 24
+nycmesh-898-north, LAP-GPS, LiteAP GPS
+nycmesh-713-lbelr-5151, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-238-lbe-240, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-295-northwest, LAP-120, LiteAP AC
+nycmesh-898-af60lr-7800, AF60-LR, airFiber 60 LR
+nycmesh-898-gbep-135, GBE-Plus, GigaBeam Plus
+nycmesh-407-lbe-1971, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-1340-north2, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-115-northwest, LAP-120, LiteAP AC
+nycmesh-2274-northwest, LAP-120, LiteAP AC
+nycmesh-2282-southwest, LAP-GPS, LiteAP GPS
+nycmesh-317-west, LAP-120, LiteAP AC
+nycmesh-5965-north, LAP-120, LiteAP AC
+nycmesh-2482-nbe-6248, NBE-5AC-Gen2, NanoBeam 5AC
+nycmesh-sn1-northeast, PS-5AC, PrismStation 5AC
+nycmesh-7800-south, LAP-GPS, LiteAP GPS
+nycmesh-1340-west1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-5712-northeast, LAP-120, LiteAP AC
+nycmesh-231-south, LAP-120, LiteAP AC
+nycmesh-1635-southwest, LAP-120, LiteAP AC
+nycmesh-sn3-south, LAP-120, LiteAP AC
+nycmesh-5916-west1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-2282-af60lr-713, AF60-LR, airFiber 60 LR
+nycmesh-2282-southeast, LAP-GPS, LiteAP GPS
+nycmesh-1971-southwest, LAP-120, LiteAP AC
+nycmesh-1933-east-s2, PS-5AC, PrismStation 5AC
+nycmesh-1340-af5x-1417, AF-5XHD, airFiber 5XHD
+nycmesh-2463-gbep-2274, GBE-Plus, GigaBeam Plus
+nycmesh-1340-west0, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-1933-af60lr-1084, AF60-LR, airFiber 60 LR
+nycmesh-2090-west, LAP-120, LiteAP AC
+nycmesh-155-south, LAP-120, LiteAP AC
+nycmesh-1932-west-s5, PS-5AC, PrismStation 5AC
+nycmesh-7512-southwest, LAP-120, LiteAP AC
+nycmesh-5916-south2, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-731-east, LAP-120, LiteAP AC
+nycmesh-329-west, LAP-120, LiteAP AC
+nycmesh-407-south, LAP-120, LiteAP AC
+nycmesh-1340-north, LAP-120, LiteAP AC
+nycmesh-5916-lbe-3607, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-5916-waveap-south, WaveAP, Wave AP
+nycmesh-1340-lbelr-7489, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-407-east, LAP-120, LiteAP AC
+nycmesh-2090-north, LAP-120, LiteAP AC
+nycmesh-664-north, LAP-120, LiteAP AC
+nycmesh-898-south, LAP-GPS, LiteAP GPS
+nycmesh-1417-lbe-664, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-426-northwest, LAP-120, LiteAP AC
+nycmesh-2282-northwest, LAP-GPS, LiteAP GPS
+nycmesh-5916-gbe1, GBE, GigaBeam
+nycmesh-2090-southeast, LAP-120, LiteAP AC
+nycmesh-3461-southwest, LAP-120, LiteAP AC
+nycmesh-7489-west, LAP-120, LiteAP AC
+nycmesh-115-gbep-5712, GBE-Plus, GigaBeam Plus
+nycmesh-295-south, LAP-120, LiteAP AC
+nycmesh-1417-west, LAP-120, LiteAP AC
+nycmesh-supernode1-a1s1, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-5916-gbe-s-sw, GBE, GigaBeam
+nycmesh-sn1-ev, PS-5AC, PrismStation 5AC
+nycmesh-3461-waveap-north, Wave-AP, Wave AP
+nycmesh-supernode1-a1s3, R5AC-PRISM, Rocket 5AC Prism
+nycmesh-3461-waveap-south, Wave-AP, Wave AP
+nycmesh-2282-northeast, LAP-GPS, LiteAP GPS
+nycmesh-1635-southeast, LAP-120, LiteAP AC
+nycmesh-7489-north, LAP-120, LiteAP AC
+nycmesh-5014-north, LAP-120, LiteAP AC
+nycmesh-2463-south, LAP-120, LiteAP AC
+nycmesh-5916-south1, RP-5AC-Gen2, Rocket Prism 5AC Gen2
+nycmesh-713-af60xr-5916, AF60-XR, airFiber 60 XR
+nycmesh-sn3-west, LAP-120, LiteAP AC
+nycmesh-1933-lbe-7512, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-2463-northeast, LAP-120, LiteAP AC
+nycmesh-6129-east, LAP-120, LiteAP AC
+nycmesh-731-north, LAP-120, LiteAP AC
+nycmesh-7800-north, LAP-GPS, LiteAP GPS
+nycmesh-3461-north, LAP-120, LiteAP AC
+nycmesh-5916-west2, PS-5AC, PrismStation 5AC
+nycmesh-sn3-north, LAP-120, LiteAP AC
+nycmesh-supernode1-a3, PS-5AC, PrismStation 5AC
+nycmesh-1340-west, LAP-120, LiteAP AC
+nycmesh-2701-southeast, LAP-120, LiteAP AC
+nycmesh-5712-south, LAP-120, LiteAP AC
+nycmesh-664-south, LAP-120, LiteAP AC
+nycmesh-6129-north, LAP-120, LiteAP AC
+nycmesh-3461-southeast, LAP-120, LiteAP AC
+nycmesh-2463-gbep-507, GBE-Plus, GigaBeam Plus
+nycmesh-3461-af60lr-5283, AF60-LR, airFiber 60 LR
+nycmesh-1340-lbe-664, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-6129-west, LAP-120, LiteAP AC
+nycmesh-1417-gbelr-3606, GBE-LR, GigaBeam LR
+nycmesh-731-gbelr-1932, GBE-LR, GigaBeam LR
+nycmesh-5965-east, LAP-120, LiteAP AC
+nycmesh-664-west, LAP-120, LiteAP AC
+nycmesh-383-lbe-329, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-713-af24-231, AF24, airFiber 24
+nycmesh-7800-west, LAP-GPS, LiteAP GPS
+nycmesh-2463-northwest, LAP-120, LiteAP AC
+nycmesh-1084-gbep-115, GBE-Plus, GigaBeam Plus
+nycmesh-1934-nbe-meshroom, NBE-5AC-16, NanoBeam 5AC 16
+nycmesh-3461-af60lr-5916, AF60-LR, airFiber 60 LR
+nycmesh-5916-northeast, PS-5AC, PrismStation 5AC
+nycmesh-2463-lbe-2090, LBE-5AC-Gen2, LiteBeam 5AC
+nycmesh-1932-lbelr-2090, LBE-5AC-LR, LiteBeam 5AC Long-Range
+nycmesh-898-east, LAP-GPS, LiteAP GPS
+nycmesh-295-gbep-449, GBE-Plus, GigaBeam Plus
+nycmesh-231-east, LAP-120, LiteAP AC
+nycmesh-231-AF60HD-333, AF60HD, airFiber 60 HD
+nycmesh-368-west, LAP-120, LiteAP AC
+nycmesh-7512-af60lr-1933, AF60-LR, airFiber 60 LR
+nycmesh-1417-east, LAP-120, LiteAP AC
+nycmesh-1932-west-s6, PS-5AC, PrismStation 5AC
