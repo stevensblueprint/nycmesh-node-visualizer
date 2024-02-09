@@ -20,11 +20,6 @@ services:
       - postgres
     environment:
       NODE_ENV: ${NODE_ENV}
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: nycmesh
-      POSTGRES_HOST: nycmesh-node-visualizer-postgres-1
-      POSTGRES_PORT: 5432
     command: npm run start
 
 volumes:
