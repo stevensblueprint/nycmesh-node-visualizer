@@ -19,7 +19,7 @@ services:
     depends_on:
       - postgres
     environment:
-      NODE_ENV: ${NODE_ENV}
+      NODE_ENV: development
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: nycmesh
