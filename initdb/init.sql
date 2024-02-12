@@ -4,7 +4,7 @@ CREATE EXTENSION postgis;
 CREATE TABLE SectorLobes (
   id SERIAL PRIMARY KEY,
   modelName VARCHAR(255),
-  angle FLOAT,
+  angle FLOAT
 );
 
 -- Create Antennas table
