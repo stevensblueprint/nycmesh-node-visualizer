@@ -56,3 +56,26 @@ To do that run
 docker compose run nycmesh-node-visualizer npm run unittest
 ```
 After running the command you should see a log of all the unit tests.
+
+## How to connect to PostgreSQL in docker container
+Start the docker container
+```
+docker-compose up
+```
+Connect to Docker shell
+```
+docker exec -it nycmesh-node-visualizer-postgres-1 psql -U postgres
+```
+You now have access to the shell of the container
+To connect to nycmesh database run
+```
+\c nycmesh
+```
+To see all the available tables run
+```
+\dt
+```
+To view data inside a Table
+```
+TABLE antennas;
+```
