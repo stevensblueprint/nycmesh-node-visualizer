@@ -33,9 +33,13 @@ Submit a pr.
 ## How to run the application
 To run the application:
 - Initialize the docker deamon. In mac and windows the docker deamon will start when you open the Docker desktop app.
+- Remove existing postgres volumes. This will ensure that the database is populated correclty
+```
+docker volume rm nycmesh-node-visualizer_postgres_data
+```
 - Initialize docker
 ```
-docker-compose up
+docker-compose up --build
 ```
 - When ever you are done using the application run:
 ```
