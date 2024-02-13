@@ -32,20 +32,17 @@ Submit a pr.
 
 ## How to run the application
 To run the application:
-- Make sure you have ```.env file``` in your src directory. (Note: ```.env.example``` will not work). You can rename ```.env.example``` to ```.env``` for local development. Do not push your .env file
 - Initialize the docker deamon. In mac and windows the docker deamon will start when you open the Docker desktop app.
 - Initialize docker
 ```
 docker-compose up
 ```
-- Initialize the application
-```
-npm run dev
-```
 - When ever you are done using the application run:
 ```
 docker-compose down
 ```
+Note: Docker will run the Next.js application and will initialize the Postgres database. Therefore, the service will be running
+in the Docker container but it will still be accessible in port 3000
 
 ## How to run Unit Tests
 We use jest to perform unit testing in our application. To add a new test add it to ```tests/```.
