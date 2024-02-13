@@ -15,7 +15,8 @@ CREATE TABLE Antennas (
   model VARCHAR(255),
   modelName VARCHAR(255),
   frequency INT,
-  geom GEOMETRY(Point, 4326),
+  latitude VARCHAR(255),
+  longitude VARCHAR(255),
   initialHeading INT,
   heading INT,
   sectorLobeId INT,
@@ -30,7 +31,7 @@ INSERT INTO SectorLobes (modelName, angle) VALUES
 ('Model C', 60.0);
 
 -- Insert dummy data into Antennas table
-INSERT INTO Antennas (name, hostname, model, modelName, frequency, geom, initialHeading, heading, sectorLobeId, radius) VALUES
-('Antenna 1', 'host1', 'Model X', 'Model A', 2600, ST_SetSRID(ST_Point(-74.006, 40.7128), 4326), 0, 0, 1, 5.0),
-('Antenna 2', 'host2', 'Model Y', 'Model B', 1800, ST_SetSRID(ST_Point(-73.935242, 40.730610), 4326), 90, 90, 2, 3.5),
-('Antenna 3', 'host3', 'Model Z', 'Model C', 700, ST_SetSRID(ST_Point(-73.985428, 40.748817), 4326), 180, 180, 3, 2.0);
+INSERT INTO Antennas (name, hostname, model, modelName, frequency, latitude, longitude initialHeading, heading, sectorLobeId, radius) VALUES
+('Antenna 1', 'host1', 'Model X', 'Model A', 2600, "-74.006", "40.7128", 0, 0, 1, 5.0),
+('Antenna 2', 'host2', 'Model Y', 'Model B', 1800, "-73.935242", "40.730610", 90, 90, 2, 3.5),
+('Antenna 3', 'host3', 'Model Z', 'Model C', 700, "-73.985428", "40.748817", 180, 180, 3, 2.0);
