@@ -32,17 +32,51 @@ Submit a pr.
 
 ## How to run the application
 To run the application:
-- Make sure you have ```.env file``` in your src directory. (Note: ```.env.example``` will not work). You can rename ```.env.example``` to ```.env``` for local development. Do not push your .env file
 - Initialize the docker deamon. In mac and windows the docker deamon will start when you open the Docker desktop app.
+- Remove existing postgres volumes. This will ensure that the database is populated correclty
+```
+docker volume rm nycmesh-node-visualizer_postgres_data
+```
 - Initialize docker
 ```
-docker-compose up
-```
-- Initialize the application
-```
-npm run dev
+docker-compose up --build
 ```
 - When ever you are done using the application run:
 ```
 docker-compose down
+```
+Note: Docker will run the Next.js application and will initialize the Postgres database. Therefore, the service will be running
+in the Docker container but it will still be accessible in port 3000
+
+## How to run Unit Tests
+We use jest to perform unit testing in our application. To add a new test add it to ```tests/```.
+Since we are using docker to initialize the database, if your unit test requires the database you have to run
+the tests from the docker container.
+To do that run
+```
+docker compose run nycmesh-node-visualizer npm run unittest
+```
+After running the command you should see a log of all the unit tests.
+
+## How to connect to PostgreSQL in docker container
+Start the docker container
+```
+docker-compose up
+```
+Connect to Docker shell
+```
+docker exec -it nycmesh-node-visualizer-postgres-1 psql -U postgres
+```
+You now have access to the shell of the container
+To connect to nycmesh database run
+```
+\c nycmesh
+```
+To see all the available tables run
+```
+\dt
+```
+To view data inside a Table
+```
+TABLE antennas;
 ```

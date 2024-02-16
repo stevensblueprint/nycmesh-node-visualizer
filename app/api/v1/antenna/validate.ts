@@ -8,7 +8,9 @@ export type Antenna = {
   modelname: string;
   frequency: number;
   location: string;
+  initialheading: number;
   heading: number;
+  radius: number;
   sectorlobe: string;
 };
 
@@ -21,7 +23,9 @@ export function isAntenna(antenna: unknown): antenna is Antenna {
     modelname: z.string(),
     frequency: z.number().int().gte(0),
     location: z.string(),
+    initialheading: z.number().int().gte(0).lt(360),
     heading: z.number().int().gte(0).lt(360),
+    radius: z.number().int().gte(0),
     sectorlobe: z.string(),
   });
 
