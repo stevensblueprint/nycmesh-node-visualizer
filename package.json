@@ -16,7 +16,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "cypress": "^13.6.4",
-    "dotenv": "^16.4.2",
+    "dotenv": "^16.4.4",
     "jest-environment-node": "^29.7.0",
     "leaflet": "^1.9.4",
     "lint-staged": "^15.1.0",
