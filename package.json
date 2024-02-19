@@ -52,7 +52,7 @@
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-tailwindcss": "^3.13.0",
+    "eslint-plugin-tailwindcss": "^3.14.2",
     "husky": "^8.0.0",
     "i": "^0.3.7",
     "identity-obj-proxy": "^3.0.0",
