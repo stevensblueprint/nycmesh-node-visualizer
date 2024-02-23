@@ -1,5 +1,4 @@
-'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -7,14 +6,41 @@ import Antennas from './Antennas';
 import SectorLobes from './SectorLobes';
 import AntennaInfo from './AntennaInfo';
 
-import { AccessPoint } from '../types';
+import { AccessPoint, Antenna } from '../types';
 
 export default function Map() {
   const [toggleInfo, setToggleInfo] = useState(false);
-
   const [currentAntenna, setCurrentAntenna] = useState<AccessPoint | null>(
     null
   );
+  const [antennasData, setAntennasData] = useState<AccessPoint[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('./app/api/v1/antenna/');
+        if (!response.ok) {
+          throw new Error(`${response.status} error: Failed to fetch atnennas`);
+        }
+        const accessPoints = (await response.json()) as Antenna[];
+
+        const antennasData: AccessPoint[] = accessPoints.map((ap: Antenna) => ({
+          id: ap.id,
+          modelName: ap.modelname,
+          lat: ap.latitude,
+          lon: ap.longitude,
+          initialHeading: ap.initialheading,
+          heading: ap.heading,
+          radius: ap.radius,
+        }));
+
+        setAntennasData(antennasData);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData().catch(console.error);
+  }, []);
 
   return (
     <>
@@ -43,12 +69,12 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {/* Call anything you want to add to the map here. */}
-        <SectorLobes />
+        <SectorLobes antennasData={antennasData} />
         <Antennas
           currentAntenna={currentAntenna}
           setCurrentAntenna={setCurrentAntenna}
           getToggle={toggleInfo}
+          antennasData={antennasData}
           changeToggle={() => setToggleInfo(!toggleInfo)}
         />
       </MapContainer>

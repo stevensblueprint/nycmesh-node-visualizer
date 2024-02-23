@@ -7,7 +7,10 @@ import { LatLngExpression } from 'leaflet';
 import { SectorLobeProps } from '../types';
 
 export default function SectorLobe({ key, val }: SectorLobeProps) {
-  const center: LatLngExpression = [val.lat, val.lon];
+  const center: LatLngExpression = [
+    parseFloat(val.lat.trim()),
+    parseFloat(val.lon.trim()),
+  ];
   const [radiusInMeters, setRadiusInMeters] = useState(100); // Adjust this as needed
   const [sectorWidth, setSectorWidth] = useState(45);
   const [heading, setHeading] = useState(90);
