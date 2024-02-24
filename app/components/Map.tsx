@@ -1,5 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import React, { useState, useEffect, useEffect } from 'react';
+import {
+  MapContainer,
+  TileLayer,
+  LayersControl,
+  LayerGroup,
+  useMap,
+} from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import Antennas from './Antennas';
@@ -69,14 +76,25 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <SectorLobes antennasData={antennasData} />
-        <Antennas
-          currentAntenna={currentAntenna}
-          setCurrentAntenna={setCurrentAntenna}
-          getToggle={toggleInfo}
-          antennasData={antennasData}
+        <DynamicCircleRadius />
+        <LayersControl position="bottomleft">
+          <LayersControl.Overlay name="Sector Lobes" checked>
+            <LayerGroup>
+              <SectorLobes antennasData={antennasData} />
+            </LayerGroup>
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Antennas" checked>
+            <LayerGroup>
+              <Antennas
+                currentAntenna={currentAntenna}
+                setCurrentAntenna={setCurrentAntenna}
+                getToggle={toggleInfo}
+                antennasData={antennasData}
           changeToggle={() => setToggleInfo(!toggleInfo)}
-        />
+              />
+            </LayerGroup>
+          </LayersControl.Overlay>
+        </LayersControl>
       </MapContainer>
     </>
   );
