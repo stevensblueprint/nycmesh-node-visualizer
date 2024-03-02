@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   MapContainer,
   TileLayer,
   LayersControl,
   LayerGroup,
-  useMap,
 } from 'react-leaflet';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import Antennas from './Antennas';
@@ -76,7 +74,6 @@ export default function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <DynamicCircleRadius />
         <LayersControl position="bottomleft">
           <LayersControl.Overlay name="Sector Lobes" checked>
             <LayerGroup>
@@ -90,7 +87,7 @@ export default function Map() {
                 setCurrentAntenna={setCurrentAntenna}
                 getToggle={toggleInfo}
                 antennasData={antennasData}
-          changeToggle={() => setToggleInfo(!toggleInfo)}
+                changeToggle={() => setToggleInfo(!toggleInfo)}
               />
             </LayerGroup>
           </LayersControl.Overlay>
