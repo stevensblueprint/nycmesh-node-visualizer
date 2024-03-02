@@ -58,6 +58,9 @@ docker compose run nycmesh-node-visualizer npm run unittest
 ```
 After running the command you should see a log of all the unit tests.
 
+**Note:** If you made changes to the unit tests and when running ```docker compose run nycmesh-node-visualizer npm run unittest```
+you don't see your changes reflected, you can rebuild the container by running ```docker-compose up --build```.
+
 ## How to connect to PostgreSQL in docker container
 Start the docker container
 ```
