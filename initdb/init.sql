@@ -6,23 +6,15 @@ CREATE TABLE Antennas (
   model VARCHAR(255),
   modelName VARCHAR(255),
   frequency INT,
+  playground_frequency INT,
   latitude VARCHAR(255),
   longitude VARCHAR(255),
-  initialHeading INT,
-  heading INT,
-  sectorLobeId INT,
-  radius FLOAT,
-  FOREIGN KEY (sectorLobeId) REFERENCES SectorLobes(id)
+  azimuth INT, --Technical Term for heading
+  typeAntenna INT, -- 0 for Omni, 1 for Point to Point, 2 for Sector
 );
 
--- Insert dummy data into SectorLobes table
-INSERT INTO SectorLobes (modelName, angle) VALUES
-('Model A', 120.0),
-('Model B', 90.0),
-('Model C', 60.0);
+INSERT INTO Antennas (name, hostname, model, modelName, frequency, playground_frequency, latitude, longitude, azimuth, typeAntenna) VALUES
+('Antenna 1', 'antenna1', 'Model A', 'Model A1', 2400, 2450, '35.6895', '139.6917', 180, 0),
+('Antenna 2', 'antenna2', 'Model B', 'Model B1', 5200, 5250, '40.7128', '-74.0060', 90, 1),
+('Antenna 3', 'antenna3', 'Model C', 'Model C1', 5800, 5850, '51.5074', '-0.1278', 270, 2);
 
--- Insert dummy data into Antennas table
-INSERT INTO Antennas (name, hostname, model, modelName, frequency, latitude, longitude initialHeading, heading, sectorLobeId, radius) VALUES
-('Antenna 1', 'host1', 'Model X', 'Model A', 2600, "-74.006", "40.7128", 0, 0, 1, 5.0),
-('Antenna 2', 'host2', 'Model Y', 'Model B', 1800, "-73.935242", "40.730610", 90, 90, 2, 3.5),
-('Antenna 3', 'host3', 'Model Z', 'Model C', 700, "-73.985428", "40.748817", 180, 180, 3, 2.0);
