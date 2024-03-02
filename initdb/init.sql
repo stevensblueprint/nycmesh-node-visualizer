@@ -1,5 +1,3 @@
-CREATE EXTENSION postgis;
-
 -- Create Antennas table
 CREATE TABLE Antennas (
   id SERIAL PRIMARY KEY,
