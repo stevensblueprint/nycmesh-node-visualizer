@@ -1,12 +1,3 @@
-CREATE EXTENSION postgis;
-
--- Create SectorLobes table
-CREATE TABLE SectorLobes (
-  id SERIAL PRIMARY KEY,
-  modelName VARCHAR(255),
-  angle FLOAT
-);
-
 -- Create Antennas table
 CREATE TABLE Antennas (
   id SERIAL PRIMARY KEY,
@@ -15,23 +6,19 @@ CREATE TABLE Antennas (
   model VARCHAR(255),
   modelName VARCHAR(255),
   frequency INT,
+  playground_frequency INT,
   latitude VARCHAR(255),
   longitude VARCHAR(255),
-  initialHeading INT,
-  heading INT,
-  sectorLobeId INT,
-  radius FLOAT,
-  FOREIGN KEY (sectorLobeId) REFERENCES SectorLobes(id)
+  azimuth INT, --Technical Term for heading
+  typeAntenna INT, -- 0 for Omni, 1 for Point to Point, 2 for Sector
+  antenna_status VARCHAR(255) DEFAULT 'Active'
+  cpu INT,
+  ram INT,
 );
 
--- Insert dummy data into SectorLobes table
-INSERT INTO SectorLobes (modelName, angle) VALUES
-('Model A', 120.0),
-('Model B', 90.0),
-('Model C', 60.0);
-
--- Insert dummy data into Antennas table
-INSERT INTO Antennas (name, hostname, model, modelName, frequency, latitude, longitude initialHeading, heading, sectorLobeId, radius) VALUES
-('Antenna 1', 'host1', 'Model X', 'Model A', 2600, "-74.006", "40.7128", 0, 0, 1, 5.0),
-('Antenna 2', 'host2', 'Model Y', 'Model B', 1800, "-73.935242", "40.730610", 90, 90, 2, 3.5),
-('Antenna 3', 'host3', 'Model Z', 'Model C', 700, "-73.985428", "40.748817", 180, 180, 3, 2.0);
+INSERT INTO Antennas (name, hostname, model, modelName, frequency, playground_frequency, latitude, longitude, azimuth, typeAntenna, antenna_status, cpu, ram) VALUES
+('Antenna One', 'ant1.hostname.com', 'X100', 'X100-1A', 2400, 2450, '34.0522', '-118.2437', 0, 0, 'Active', 4, 16),
+('Antenna Two', 'ant2.hostname.com', 'Y200', 'Y200-1B', 5200, 5250, '40.7128', '-74.0060', 90, 1, 'Inactive', 8, 32),
+('Antenna Three', 'ant3.hostname.com', 'Z300', 'Z300-1C', 5800, 5850, '51.5074', '-0.1278', 180, 2, 'Maintenance', 16, 64),
+('Antenna Four', 'ant4.hostname.com', 'W400', 'W400-1D', 2400, 2450, '48.8566', '2.3522', 270, 0, 'Active', 4, 16),
+('Antenna Five', 'ant5.hostname.com', 'V500', 'V500-1E', 5200, 5250, '-33.8688', '151.2093', 45, 1, 'Active', 8, 32);
