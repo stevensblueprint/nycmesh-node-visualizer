@@ -11,9 +11,9 @@ CREATE TABLE Antennas (
   longitude VARCHAR(255),
   azimuth INT, --Technical Term for heading
   typeAntenna INT, -- 0 for Omni, 1 for Point to Point, 2 for Sector
-  antenna_status VARCHAR(255) DEFAULT 'Active'
+  antenna_status VARCHAR(255) DEFAULT 'Active',
   cpu INT,
-  ram INT,
+  ram INT
 );
 
 INSERT INTO Antennas (name, hostname, model, modelName, frequency, playground_frequency, latitude, longitude, azimuth, typeAntenna, antenna_status, cpu, ram) VALUES
