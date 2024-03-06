@@ -20,10 +20,6 @@ export default function Map() {
   );
   const [antennasData, setAntennasData] = useState<AccessPoint[]>([]);
 
-  const displayErrorMessage = (message: string) => {
-    alert(message);
-  };
-
   useEffect(() => {
     async function fetchData(path: string, maxRetries = 3, retryDelay = 1000) {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -73,15 +69,15 @@ export default function Map() {
 
           switch (statusCode) {
             case 404:
-              displayErrorMessage('404: The requested resource was not found.');
+              alert('404: The requested resource was not found.');
               break;
             case 500:
-              displayErrorMessage(
+              alert(
                 '500: A server error has occurred. Please try again later.'
               );
               break;
             default:
-              displayErrorMessage('An unexpected error has occurred.');
+              alert('An unexpected error has occurred.');
           }
         }
       }
