@@ -24,11 +24,11 @@ export default function AntennaInfo({
         <div className="">
           <p>ID: {currentAntenna && currentAntenna.id}</p>
           <p>Model Name: {currentAntenna && currentAntenna.modelName}</p>
-          <p>Heading: {currentAntenna && currentAntenna.heading}</p>
-          <p>
-            Initial Heading: {currentAntenna && currentAntenna.initialHeading}
-          </p>
-          <p>Radius: {currentAntenna && currentAntenna.radius}</p>
+          <p>Azimuth: {currentAntenna && currentAntenna.azimuth}</p>
+          <p>Frequency: {currentAntenna && currentAntenna.frequency}</p>
+          <p>Stats: {currentAntenna && currentAntenna.antenna_status}</p>
+          <p>CPU: {currentAntenna && currentAntenna.cpu}</p>
+          <p>RAM: {currentAntenna && currentAntenna.ram}</p>
         </div>
       </div>
     );

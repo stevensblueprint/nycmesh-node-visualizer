@@ -20,31 +20,76 @@ export default function Map() {
   );
   const [antennasData, setAntennasData] = useState<AccessPoint[]>([]);
 
+  const displayErrorMessage = (message: string) => {
+    alert(message);
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('./app/api/v1/antenna/');
-        if (!response.ok) {
-          throw new Error(`${response.status} error: Failed to fetch atnennas`);
+    async function fetchData(path: string, maxRetries = 3, retryDelay = 1000) {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch(path);
+          if (!response.ok) {
+            throw new Error(`${response.status} error: Failed to fetch`);
+          }
+
+          const responseJson = (await response.json()) as Antenna[];
+          console.log('Antennas Data:', responseJson);
+          return responseJson;
+        } catch (e) {
+          if (e instanceof Error) {
+            console.error(`Attempt ${attempt} failed: ${e.message}`);
+            if (attempt === maxRetries) throw e; // Rethrow error on last attempt
+            await new Promise((resolve) => setTimeout(resolve, retryDelay)); // Wait before retrying
+          }
         }
-        const accessPoints = (await response.json()) as Antenna[];
+      }
+    }
 
-        const antennasData: AccessPoint[] = accessPoints.map((ap: Antenna) => ({
-          id: ap.id,
-          modelName: ap.modelname,
-          lat: ap.latitude,
-          lon: ap.longitude,
-          initialHeading: ap.initialheading,
-          heading: ap.heading,
-          radius: ap.radius,
-        }));
+    const fetchDataAndSetAntennasData = async () => {
+      const url = '/api/v1/antenna/';
+      try {
+        const accessPoints = await fetchData(url);
+        if (accessPoints) {
+          const antennasData: AccessPoint[] = accessPoints.map(
+            (ap: Antenna) => ({
+              id: ap.id,
+              modelName: ap.modelname,
+              lat: ap.latitude,
+              lon: ap.longitude,
+              frequency: ap.frequency,
+              azimuth: ap.azimuth,
+              antenna_status: ap.antenna_status,
+              cpu: ap.cpu,
+              ram: ap.ram,
+            })
+          );
 
-        setAntennasData(antennasData);
+          setAntennasData(antennasData);
+        }
       } catch (e) {
-        console.log(e);
+        if (e instanceof Error) {
+          const statusCode = parseInt(e.message.substring(0, 4));
+
+          switch (statusCode) {
+            case 404:
+              displayErrorMessage('404: The requested resource was not found.');
+              break;
+            case 500:
+              displayErrorMessage(
+                '500: A server error has occurred. Please try again later.'
+              );
+              break;
+            default:
+              displayErrorMessage('An unexpected error has occurred.');
+          }
+        }
       }
     };
-    fetchData().catch(console.error);
+
+    fetchDataAndSetAntennasData().catch((error) => {
+      console.error(error);
+    });
   }, []);
 
   return (

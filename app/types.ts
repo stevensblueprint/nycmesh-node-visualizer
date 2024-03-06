@@ -1,26 +1,30 @@
 // Interfaces
 export type Antenna = {
-  longitude: string;
-  latitude: string;
   id: string;
   name: string;
   hostname: string;
   model: string;
   modelname: string;
   frequency: number;
-  initialheading: number;
-  heading: number;
-  radius: number;
-  sectorlobe: string;
+  playground_frequency: number;
+  latitude: string;
+  longitude: string;
+  azimuth: number;
+  typeAntenna: number;
+  antenna_status: string;
+  cpu: number;
+  ram: number;
 };
 export interface AccessPoint {
   id: string;
   modelName: string;
   lat: string;
   lon: string;
-  initialHeading: number;
-  heading: number;
-  radius: number;
+  frequency: number;
+  azimuth: number;
+  antenna_status: string;
+  cpu: number;
+  ram: number;
 }
 
 export interface ReducedContent {
