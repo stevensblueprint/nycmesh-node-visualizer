@@ -4,11 +4,6 @@ import { isAntenna } from '@/app/api/v1/antenna/validate';
 import { pool } from '@/app/api/v1/connection';
 import StatusError from '@/app/api/(utils)/StatusError';
 
-interface RequestData {
-  heading: number;
-  radius: number;
-}
-
 export async function DELETE(_: Request, context: { params: { id: string } }) {
   try {
     if (context.params.id.trim().length == 0)
@@ -61,25 +56,17 @@ export async function PUT(
     }
 
     const id = context.params.id;
-    const { heading, radius }: RequestData =
-      (await request.json()) as RequestData;
+
+    const { frequency } = (await request.json()) as { frequency: number };
 
     const client = await pool.connect();
 
     const query = `
-      WITH updated_antenna AS (
-        UPDATE Antennas
-        SET heading = $1
-        WHERE id = $2
-        RETURNING *
-      )
-      UPDATE SectorLobes s
-      SET radius = $3
-      FROM updated_antenna ua
-      WHERE s.sector_lobe_id = ua.sectorLobe
-      RETURNING ua.*;
+      UPDATE Antennas
+      SET frequency = $1
+      RETURNING *;
       `;
-    const result = await client.query(query, [heading, id, radius]);
+    const result = await client.query(query, [frequency]);
 
     if (result.rowCount === 0) {
       throw new StatusError(404, `Antenna with ${id} does not exist.`);
