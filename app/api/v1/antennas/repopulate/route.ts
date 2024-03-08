@@ -147,6 +147,7 @@ async function getData(): Promise<AntennaNoId[]> {
 
 export async function POST(req: NextRequest, res: NextResponse) {
   try {
+    // TODO: keep heading data if new heading data is null
     const client = await pool.connect();
     const antennas = (await client.query('SELECT * FROM Antennas')).rows;
 

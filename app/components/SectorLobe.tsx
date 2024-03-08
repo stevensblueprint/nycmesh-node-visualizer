@@ -10,12 +10,12 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
   const center: LatLngExpression = [val.lat, val.lon];
   const [radiusInMeters, setRadiusInMeters] = useState(100); // Adjust this as needed
   const [sectorWidth, setSectorWidth] = useState(45);
-  const [heading, setHeading] = useState(90);
+  const [heading, setHeading] = useState(0);
 
   // holds previous values in case they do not want to commit
   const [tempRadius, setTempRadius] = useState(100);
-  const [tempSectorWidth, setTempSectorWidth] = useState(20);
-  const [tempHeading, setTempHeading] = useState(90);
+  const [tempSectorWidth, setTempSectorWidth] = useState(45);
+  const [tempHeading, setTempHeading] = useState(0);
 
   const radiusRange: number[][] = [
     [0, 45],
@@ -54,10 +54,14 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
     { length: numberOfVertices + 1 },
     (_, index) => {
       const angle: number =
-        (heading - sectorWidth / 2 + (sectorWidth * index) / numberOfVertices) *
+        (90 +
+          heading -
+          sectorWidth / 2 +
+          (sectorWidth * index) / numberOfVertices) *
         (Math.PI / 180);
 
       const lat: number = center[0] + scaleFactor * Math.sin(angle);
+      // const lng: number = center[1] + scaleFactor * Math.cos(angle) * 0.3;
       const lng: number = center[1] + scaleFactor * Math.cos(angle);
 
       return [lat, lng];
@@ -127,7 +131,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
             m
           </div>
           <div className="my-2 flex flex-row">
-            <label htmlFor="sectorwidth">Sector Width: </label>
+            <label htmlFor="sectorwidth">Beam Width: </label>
             <input
               className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
               type="text"
@@ -137,7 +141,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
               placeholder={String(sectorWidth)}
               onChange={(e) => handleChangeSectorWidth(e)}
             />{' '}
-            m
+            degrees
           </div>
           <div className="my-2 flex flex-row">
             <label htmlFor="heading">Heading: </label>
