@@ -18,8 +18,6 @@ export type Antenna = {
 };
 
 export function isAntenna(antenna: unknown): antenna is Antenna {
-  console.log('validate');
-  console.log(antenna);
   const antennaSchema = z.object({
     id: z.number(),
     name: z.string(),
