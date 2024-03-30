@@ -1,7 +1,6 @@
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
 
-import access_points from '../../access_points.json';
 import SectorLobe from './SectorLobe';
 
 // ! Current known issues:
@@ -12,28 +11,29 @@ import SectorLobe from './SectorLobe';
 // !    So their needs to be a specific algorithm which will aid in the creation of the sectorLobe based on the model of the antenna.
 // ! 3. The sectorlobes do not appear if heading is at 360 degrees
 
+import { useAppSelector } from '../../lib/hooks';
+
 // Types are temporary until the API is up and running
-import { AccessPoint, ReducedPoints, ReducedContent } from '../types';
+// import { AccessPoint, ReducedPoints, SectorLobesProps } from '../types';
+import { AccessPoint, ReducedPoints } from '../types';
 
 export default function SectorLobes() {
-  function reduceAPs(): AccessPoint[] {
-    const reduced: AccessPoint[] = [];
-    for (let i: number = 0; i < access_points.length; i++) {
-      const ap: AccessPoint = {
-        id: access_points[i].identification.id,
-        status: access_points[i].overview.status,
-        cpu: access_points[i].overview.cpu,
-        ram: access_points[i].overview.ram,
-        lat: access_points[i].location.latitude,
-        lon: access_points[i].location.longitude,
-        modelName: access_points[i].identification.modelName,
-      };
-      reduced.push(ap);
+  const antennasData = useAppSelector((state) => state.currentAntennas.value);
+
+  let maxFreq = 0;
+  let minFreq = 1000000;
+
+  for (let i = 0; i < antennasData.data.length; i++) {
+    if (antennasData.data[i].frequency > maxFreq) {
+      maxFreq = antennasData.data[i].frequency;
     }
-    return reduced;
+    if (antennasData.data[i].frequency < minFreq) {
+      minFreq = antennasData.data[i].frequency;
+    }
   }
 
-  const antennas: AccessPoint[] = reduceAPs();
+  const antennas: AccessPoint[] = antennasData.data;
+
   const reducedAntennas: ReducedPoints = {};
 
   for (let i = 0; i < antennas.length; i++) {
@@ -47,9 +47,23 @@ export default function SectorLobes() {
     }
     reducedAntennas[val]['points'].push(antennas[i]);
   }
-  return Object.entries(reducedAntennas).map(
-    (value: [string, ReducedContent]) => {
-      return <SectorLobe key={value[0]} val={value[1]} />;
+
+  // get all seperated sectroLobes
+  const sectorLobes: JSX.Element[] = [];
+
+  for (const [key, value] of Object.entries(reducedAntennas)) {
+    for (const ap of value.points) {
+      sectorLobes.push(
+        <SectorLobe
+          key={`${key} ${ap && ap.id ? ap.id : ''}`}
+          key_path={`${key} ${ap && ap.id ? ap.id : ''}`}
+          val={value}
+          ap={ap as AccessPoint}
+          freqRange={[minFreq, maxFreq]}
+        />
+      );
     }
-  );
+  }
+
+  return <div>{sectorLobes}</div>;
 }

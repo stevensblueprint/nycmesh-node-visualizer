@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import playgroundReducer from './features/playground/playgroundSlice';
+import actualReducer from './features/actual/actualSlice';
+import currentAntennasReducer from './features/currentAntennas/currentAntennasSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       playground: playgroundReducer,
+      actual: actualReducer,
+      currentAntennas: currentAntennasReducer,
     },
   });
 };
