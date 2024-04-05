@@ -1,180 +1,57 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  Antenna,
-  AntennaNoId,
-  isAntenna,
-  isAntennaNoId,
-  isAntennas,
-} from '@/app/api/v1/validate';
-import { pool } from '../../connection';
-import StatusError from '@/app/api/(utils)/StatusError';
-
-import axios from 'axios';
-import https from 'https';
+import { NextResponse } from 'next/server';
 import * as R from 'ramda';
 import 'dotenv/config';
 
-function convertAntenna(ant: unknown): AntennaNoId {
-  if (typeof ant !== 'object' || ant == null || ant == undefined)
-    throw new StatusError(500, `Antenna provided is invalid.\n${String(ant)}`);
+import { NYCAntenna } from '@/app/api/v1/antenna/validate';
+import { isAntennas } from '@/app/api/v1/antennas/validate';
+import { pool } from '@/app/api/v1/connection';
+import StatusError from '@/app/api/(utils)/StatusError';
 
-  if (!('name' in ant))
-    throw new StatusError(
-      500,
-      'Name of antenna not provided by nycmesh database.'
-    );
+import { getNYCAntenna } from './_getNYCAntenna';
 
-  if (!('hostname' in ant))
-    throw new StatusError(
-      500,
-      'Hostname of antenna not provided by nycmesh database.'
-    );
-
-  if (!('model' in ant))
-    throw new StatusError(
-      500,
-      'model of antenna not provided by nycmesh database.'
-    );
-
-  if (!('modelName' in ant))
-    throw new StatusError(
-      500,
-      'modelName of antenna not provided by nycmesh database.'
-    );
-
-  if (
-    !(
-      'overview' in ant &&
-      typeof ant.overview === 'object' &&
-      ant.overview != null &&
-      'frequency' in ant.overview
-    )
-  ) {
-    throw new StatusError(
-      500,
-      'frequency of antenna not provided by nycmesh database.'
-    );
-  }
-
-  if (
-    !(
-      'attributes' in ant &&
-      typeof ant.attributes === 'object' &&
-      ant.attributes != null &&
-      'ssid' in ant.attributes
-    )
-  )
-    throw new StatusError(
-      500,
-      'location of antenna not provided by nycmesh database.'
-    );
-
-  if (
-    !(
-      'location' in ant &&
-      typeof ant.location === 'object' &&
-      ant.location != null &&
-      'heading' in ant.location
-    )
-  )
-    throw new StatusError(
-      500,
-      'heading of antenna not provided by nycmesh database.'
-    );
-
-  const antenna: unknown = {
-    name: ant.name,
-    hostname: ant.hostname,
-    model: ant.model,
-    modelname: ant.modelName,
-    frequency: ant.overview.frequency,
-    location: ant.attributes.ssid,
-    heading: ant.location.heading,
-    sectorlobe: 'unknown',
-  };
-
-  if (isAntennaNoId(antenna)) return antenna;
-  else
-    throw new StatusError(500, 'Incorrect type fetched from nycmesh database.');
-}
-
-function convertAntennas(data: unknown): AntennaNoId[] {
-  if (!Array.isArray(data))
-    throw new StatusError(
-      500,
-      'Data provided by nycmesh server is not an array.'
-    );
-
-  return data.map((antenna) => convertAntenna(antenna));
-}
-
-async function getData(): Promise<AntennaNoId[]> {
-  const tokenRes = await axios.post(
-    'https://uisp.mesh.nycmesh.net/nms/api/v2.1/user/login',
-    {
-      username: process.env.MESH_USERNAME,
-      password: process.env.MESH_PASSWORD,
-    },
-    {
-      httpsAgent: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    }
-  );
-  const token: unknown = tokenRes.headers['x-auth-token'];
-  if (typeof token != 'string') {
-    throw new StatusError(
-      500,
-      'Unable to populate database due to server errors.'
-    );
-  }
-
-  const dataRes = await axios.get(
-    'https://uisp.mesh.nycmesh.net/nms/api/v2.1/devices',
-    {
-      headers: {
-        'x-auth-token': token,
-      },
-      httpsAgent: new https.Agent({
-        rejectUnauthorized: false,
-      }),
-    }
-  );
-
-  return convertAntennas(dataRes.data);
-}
-
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST() {
   try {
-    // TODO: keep heading data if new heading data is null
     const client = await pool.connect();
     const antennas = (await client.query('SELECT * FROM Antennas')).rows;
 
     if (!isAntennas(antennas))
       throw new StatusError(500, 'Server is unable to fetch antenna data.');
 
-    const nycData: AntennaNoId[] = await getData();
+    const convertedNycData: NYCAntenna[] = await getNYCAntenna();
 
-    for (const nycAntenna of nycData) {
+    for (const nycAntenna of convertedNycData) {
       let antennaDoesNotExist = true;
       for (const ourAntenna of antennas) {
         if (nycAntenna.hostname === ourAntenna.hostname) {
+          if (nycAntenna.azimuth === 0) nycAntenna.azimuth = ourAntenna.azimuth;
+
+          // checks if nycAntenna is not equivalent to ourAntenna without id property
           if (!R.equals(nycAntenna)(R.omit(['id'], ourAntenna))) {
-            // TODO: waiting for pr on inithead and initfreq
+            // FIXME: is it string NULL or undefined/null when passed from nycmesh?
+
+            // if json is not 0, always pick json
+            // else keep db
+
             const updateResult = await client.query(
-              `UPDATE Antennas SET name = $1, model = $2, modelName = $3, frequency = $4, location = $5, heading = $6, sectorLobe = $7 WHERE id = ${ourAntenna.id} RETURNING *`,
+              `UPDATE Antennas SET name = $1, hostname = $2, model = $3, modelname = $4, frequency = $5, latitude = $6, longitude = $7, azimuth = $8, typeAntenna = $9, antenna_status = $10, cpu = $11, ram = $12 WHERE id = ${ourAntenna.id} RETURNING *`,
               [
                 nycAntenna.name,
+                nycAntenna.hostname,
                 nycAntenna.model,
                 nycAntenna.modelName,
                 nycAntenna.frequency,
-                nycAntenna.location,
-                nycAntenna.heading,
-                nycAntenna.sectorLobe,
+                nycAntenna.latitude,
+                nycAntenna.longitude,
+                nycAntenna.azimuth,
+                nycAntenna.typeAntenna,
+                nycAntenna.antenna_status,
+                nycAntenna.cpu,
+                nycAntenna.ram,
               ]
             );
             // TODO: Check update result
+            if (updateResult === null)
+              throw new StatusError(500, 'Unknown id error while updating.');
           }
           antennaDoesNotExist = false;
           break;
@@ -182,21 +59,26 @@ export async function POST(req: NextRequest, res: NextResponse) {
       }
 
       if (antennaDoesNotExist) {
-        // TODO: waiting for pr on inithead and initfreq
         const insertResult = await client.query(
-          `INSERT INTO Antennas (id, name, hostname, model, modelName, frequency, location, heading, sectorLobe) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+          `INSERT INTO Antennas (id, name, hostname, model, modelName, frequency, playground_frequency, latitude, longitude, azimuth, typeAntenna, antenna_status, cpu, ram) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
           [
             nycAntenna.name,
             nycAntenna.hostname,
             nycAntenna.model,
             nycAntenna.modelName,
             nycAntenna.frequency,
-            nycAntenna.location,
-            nycAntenna.heading,
-            nycAntenna.sectorLobe,
+            nycAntenna.latitude,
+            nycAntenna.longitude,
+            nycAntenna.azimuth,
+            nycAntenna.typeAntenna,
+            nycAntenna.antenna_status,
+            nycAntenna.cpu,
+            nycAntenna.ram,
           ]
         );
         // TODO: Check insert result
+        if (insertResult === null)
+          throw new Error('Unknown id error while inserting.');
       }
     }
 
@@ -210,13 +92,3 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({ message }, { status });
   }
 }
-
-/*
-TODO: 
-- Where is sectorlobe? 
-- What is location?
-- What do I do when heading is null? How often is heading null? Should I set it to 0, or allow nulls in our db for initial headings too?
-- Do we want our db to generate the id for each new antenna?
-- Why is modelName and sectorLobe camelcase but hostname is not camelcase? There needs to be some change to validate.ts since Antenna type and Antenna table in database do not have the same properties/columns.
-- Waiting to merge changes for initialHeading and initalFrequency.
- */
