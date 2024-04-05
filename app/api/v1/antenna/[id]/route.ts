@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { isAntenna } from '@/app/api/v1/validate';
+import { isAntenna } from '@/app/api/v1/antenna/validate';
 import { pool } from '@/app/api/v1/connection';
 import StatusError from '@/app/api/(utils)/StatusError';
 
