@@ -7,11 +7,14 @@ export type Antenna = {
   model: string;
   modelname: string;
   frequency: number;
-  location: string;
-  initialheading: number;
-  heading: number;
-  radius: number;
-  sectorlobe: string;
+  playground_frequency: number;
+  latitude: string;
+  longitude: number;
+  azimuth: number;
+  typeAntenna: number;
+  antenna_status: string;
+  cpu: number;
+  ram: string;
 };
 
 export function isAntenna(antenna: unknown): antenna is Antenna {
@@ -22,11 +25,13 @@ export function isAntenna(antenna: unknown): antenna is Antenna {
     model: z.string(),
     modelname: z.string(),
     frequency: z.number().int().gte(0),
-    location: z.string(),
-    initialheading: z.number().int().gte(0).lt(360),
-    heading: z.number().int().gte(0).lt(360),
-    radius: z.number().int().gte(0),
-    sectorlobe: z.string(),
+    playground_frequency: z.number().int().gte(0),
+    latitude: z.string(),
+    longitude: z.string(),
+    azimuth: z.number().int().gte(0).lt(360),
+    typeAntenna: z.number().gte(0).lte(2),
+    cpu: z.string(),
+    ram: z.string(),
   });
 
   const res = antennaSchema.safeParse(antenna);

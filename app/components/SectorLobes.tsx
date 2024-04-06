@@ -1,7 +1,6 @@
 import React from 'react';
 import 'leaflet/dist/leaflet.css';
 
-import access_points from '../../access_points.json';
 import SectorLobe from './SectorLobe';
 
 // ! Current known issues:
@@ -13,27 +12,15 @@ import SectorLobe from './SectorLobe';
 // ! 3. The sectorlobes do not appear if heading is at 360 degrees
 
 // Types are temporary until the API is up and running
-import { AccessPoint, ReducedPoints, ReducedContent } from '../types';
+import {
+  AccessPoint,
+  ReducedPoints,
+  ReducedContent,
+  SectorLobesProps,
+} from '../types';
 
-export default function SectorLobes() {
-  function reduceAPs(): AccessPoint[] {
-    const reduced: AccessPoint[] = [];
-    for (let i: number = 0; i < access_points.length; i++) {
-      const ap: AccessPoint = {
-        id: access_points[i].identification.id,
-        status: access_points[i].overview.status,
-        cpu: access_points[i].overview.cpu,
-        ram: access_points[i].overview.ram,
-        lat: access_points[i].location.latitude,
-        lon: access_points[i].location.longitude,
-        modelName: access_points[i].identification.modelName,
-      };
-      reduced.push(ap);
-    }
-    return reduced;
-  }
-
-  const antennas: AccessPoint[] = reduceAPs();
+export default function SectorLobes({ antennasData }: SectorLobesProps) {
+  const antennas: AccessPoint[] = antennasData;
   const reducedAntennas: ReducedPoints = {};
 
   for (let i = 0; i < antennas.length; i++) {
