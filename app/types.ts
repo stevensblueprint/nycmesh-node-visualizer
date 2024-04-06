@@ -1,3 +1,5 @@
+import { LatLngExpression, LatLngTuple } from 'leaflet';
+
 // Interfaces
 
 export type Antenna = {
@@ -36,6 +38,13 @@ export interface ReducedContent {
 
 export interface ReducedPoints {
   [key: string]: ReducedContent;
+}
+
+export interface SectorlobeData {
+  id: string;
+  center: LatLngTuple;
+  sectorVertices: LatLngExpression[];
+  frequency: number;
 }
 
 // Props

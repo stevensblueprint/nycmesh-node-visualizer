@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
+    "@turf/helpers": "^7.0.0-alpha.114",
+    "@turf/intersect": "^7.0.0-alpha.114",
     "cors": "^2.8.5",
     "cypress": "^13.6.4",
     "dotenv": "^16.4.2",

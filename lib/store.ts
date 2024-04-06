@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import playgroundReducer from './features/playground/playgroundSlice';
 import actualReducer from './features/actual/actualSlice';
 import currentAntennasReducer from './features/currentAntennas/currentAntennasSlice';
+import sectorlobesReducer from './features/sectorlobes/sectorlobesSlice';
 
 export const makeStore = () => {
   return configureStore({
@@ -9,6 +10,7 @@ export const makeStore = () => {
       playground: playgroundReducer,
       actual: actualReducer,
       currentAntennas: currentAntennasReducer,
+      sectorlobes: sectorlobesReducer,
     },
   });
 };

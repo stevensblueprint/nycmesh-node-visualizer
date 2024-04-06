@@ -9,6 +9,7 @@ import { SectorLobeProps } from '../types';
 import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 
 import { updateCurrent } from '@/lib/features/currentAntennas/currentAntennasSlice';
+import { updateSectorlobes } from '@/lib/features/sectorlobes/sectorlobesSlice';
 
 export default function SectorLobe({
   key_path,
@@ -152,9 +153,18 @@ export default function SectorLobe({
     const newAp = { ...currentAp };
     newAp.azimuth = tempHeading;
     newAp.frequency = tempFreq;
+
+    const newSectorLobe = {
+      id: ap.id,
+      center: center,
+      sectorVertices: sectorVertices,
+      frequency: tempFreq,
+    };
+
     setCurrentAp(newAp);
     if (currentMode === 'playground') {
       dispatch(updateCurrent(newAp));
+      dispatch(updateSectorlobes(newSectorLobe));
     }
   }
 

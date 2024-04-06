@@ -3,13 +3,12 @@ import 'leaflet/dist/leaflet.css';
 
 import SectorLobe from './SectorLobe';
 
-// ! Current known issues:
+// ! Current known issues/map quirks:
 // ! 1. The sectorlobes, when tuned to different headings, the look of the width changes.
 // !    This is because the way shapes are warped due to the projection of the map.
 // ! 2. The sectorLobes do not represent the actual shape of the sectorLobe.
 // !    This is because the sectorLobe is not a cone. It is an ellipse.
 // !    So their needs to be a specific algorithm which will aid in the creation of the sectorLobe based on the model of the antenna.
-// ! 3. The sectorlobes do not appear if heading is at 360 degrees
 
 import { useAppSelector } from '../../lib/hooks';
 
