@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   MapContainer,
   TileLayer,
@@ -41,8 +41,6 @@ import {
   changeCurrent,
 } from '../../lib/features/currentAntennas/currentAntennasSlice';
 
-import { initializeSectorlobes } from '../../lib/features/sectorlobes/sectorlobesSlice';
-
 function IntersectionInfo({
   intersections,
   setPanToCoords,
@@ -65,7 +63,7 @@ function IntersectionInfo({
                     {lobe1.id} and {lobe2.id}
                   </p>
                   <button
-                    className="hover:text-gray-500"
+                    className="text-gray-400 transition-all hover:text-gray-600"
                     onClick={() => setPanToCoords(lobe1.center)}
                   >
                     Go to
@@ -112,9 +110,18 @@ function DynamicCircleRadius() {
   return null;
 }
 
-function RecenterMap({ panToCoords }: { panToCoords: LatLngExpression }) {
+function RecenterMap({
+  panToCoords,
+  setPanToCoords,
+}: {
+  panToCoords: LatLngExpression;
+  setPanToCoords: (coords: LatLngExpression | null) => void;
+}) {
   const map = useMap();
-  map.setView(panToCoords, map.getZoom());
+  if (panToCoords) {
+    map.setView(panToCoords, map.getZoom());
+    setPanToCoords(null);
+  }
   return null;
 }
 
@@ -135,9 +142,6 @@ export default function Map() {
   const actualData = useAppSelector((state) => state.actual.value);
   const oldPlaygroundData = useAppSelector((state) => state.playground.old);
 
-  const sectorlobesData: SectorlobeData[] = useAppSelector(
-    (state) => state.sectorlobes.value
-  );
   const antennasData = useAppSelector((state) => state.currentAntennas.value);
 
   const dispatch = useAppDispatch();
@@ -183,68 +187,10 @@ export default function Map() {
             })
           );
 
-          const sectorlobeData: SectorlobeData[] = antennasData.map((ap) => {
-            const center: L.LatLngTuple = [
-              parseFloat(ap.lat.trim()),
-              parseFloat(ap.lon.trim()),
-            ];
-            const heading = ap.azimuth;
-            const radiusInMeters = 100;
-            const sectorWidth = 45;
-            let radius: number = 0;
-
-            if (heading < 45) {
-              // 0-45
-              radius = radiusInMeters;
-            } else if (heading < 135) {
-              // 45-135
-              radius = radiusInMeters - (radiusInMeters / 100) * 20;
-            } else if (heading < 225) {
-              // 135-225
-              radius = radiusInMeters;
-            } else if (heading < 315) {
-              // 225-315
-              radius = radiusInMeters - (radiusInMeters / 100) * 20;
-            } else if (heading <= 360) {
-              // 315-360
-              radius = radiusInMeters;
-            }
-            const numberOfVertices: number = 100;
-            const earthCircumferenceAtLatitude =
-              40008000 * Math.cos((center[0] * Math.PI) / 180);
-
-            const scaleFactor = (radius / earthCircumferenceAtLatitude) * 360;
-            const sectorVertices: LatLngExpression[] = Array.from(
-              { length: numberOfVertices + 1 },
-              (_, index) => {
-                const angle: number =
-                  (90 +
-                    heading -
-                    sectorWidth / 2 +
-                    (sectorWidth * index) / numberOfVertices) *
-                  (Math.PI / 180);
-
-                const lat: number = center[0] + scaleFactor * Math.sin(angle);
-                // const lng: number = center[1] + scaleFactor * Math.cos(angle) * 0.3;
-                const lng: number = center[1] + scaleFactor * Math.cos(angle);
-
-                return [lat, lng];
-              }
-            );
-            sectorVertices.push(center);
-            return {
-              id: ap.id,
-              center,
-              sectorVertices,
-              frequency: ap.frequency,
-            };
-          });
-
           if (!initialized.current) {
             store.dispatch(initializeActual(antennasData));
             store.dispatch(initializePlayground(antennasData));
             store.dispatch(initializeCurrent(antennasData));
-            store.dispatch(initializeSectorlobes(sectorlobeData));
             initialized.current = true;
           }
         }
@@ -275,6 +221,62 @@ export default function Map() {
   }, [store]);
 
   useEffect(() => {
+    const sectorlobesData: SectorlobeData[] = antennasData.data.map((ap) => {
+      const center: L.LatLngTuple = [
+        parseFloat(ap.lat.trim()),
+        parseFloat(ap.lon.trim()),
+      ];
+      const heading = ap.azimuth;
+      const radiusInMeters = 100;
+      const sectorWidth = 45;
+      let radius: number = 0;
+
+      if (heading < 45) {
+        // 0-45
+        radius = radiusInMeters;
+      } else if (heading < 135) {
+        // 45-135
+        radius = radiusInMeters - (radiusInMeters / 100) * 20;
+      } else if (heading < 225) {
+        // 135-225
+        radius = radiusInMeters;
+      } else if (heading < 315) {
+        // 225-315
+        radius = radiusInMeters - (radiusInMeters / 100) * 20;
+      } else if (heading <= 360) {
+        // 315-360
+        radius = radiusInMeters;
+      }
+      const numberOfVertices: number = 100;
+      const earthCircumferenceAtLatitude =
+        40008000 * Math.cos((center[0] * Math.PI) / 180);
+
+      const scaleFactor = (radius / earthCircumferenceAtLatitude) * 360;
+      const sectorVertices: LatLngExpression[] = Array.from(
+        { length: numberOfVertices + 1 },
+        (_, index) => {
+          const angle: number =
+            (90 +
+              heading -
+              sectorWidth / 2 +
+              (sectorWidth * index) / numberOfVertices) *
+            (Math.PI / 180);
+
+          const lat: number = center[0] + scaleFactor * Math.sin(angle);
+          // const lng: number = center[1] + scaleFactor * Math.cos(angle) * 0.3;
+          const lng: number = center[1] + scaleFactor * Math.cos(angle);
+
+          return [lat, lng];
+        }
+      );
+      sectorVertices.push(center);
+      return {
+        id: ap.id,
+        center,
+        sectorVertices,
+        frequency: ap.frequency,
+      };
+    });
     // gather lobes into clusters by frequency
     if (sectorlobesData.length > 0) {
       const clusters: { [key: string]: SectorlobeData[] } = {};
@@ -340,18 +342,26 @@ export default function Map() {
       }
       setIntersections(Object.values(foundIntersections));
     }
-  }, [sectorlobesData]);
+  }, [antennasData]);
+
+  const getAmountOfIntersections = useMemo(() => {
+    let amount = 0;
+    for (let i = 0; i < intersections.length; i++) {
+      amount += intersections[i].length;
+    }
+    return amount;
+  }, [intersections]);
 
   return (
     <>
-      <div className="absolute right-0 top-0 z-[1001] flex flex-col justify-center bg-black">
+      <div className="absolute right-0 top-0 z-[1001] flex flex-col justify-center rounded-md bg-black p-2">
         {intersections.length > 0 ? (
-          <p className="text-center">
-            Found {intersections.length} intersection
-            {intersections.length > 1 ? 's' : ''}.
+          <p className="text-center text-red-600">
+            Found {getAmountOfIntersections} intersection
+            {getAmountOfIntersections > 1 ? 's' : ''}
           </p>
         ) : (
-          <p className="text-center">No intersections found.</p>
+          <p className="text-center text-green-600">No intersections found</p>
         )}
         {intersectionToggle && intersections.length > 0 ? (
           <IntersectionInfo
@@ -361,8 +371,15 @@ export default function Map() {
             }
           />
         ) : null}
-        <button onClick={() => setIntersectionToggle(!intersectionToggle)}>
-          {!intersectionToggle ? 'Open' : 'Close'}
+        <button
+          className={
+            !intersectionToggle
+              ? 'transition-all hover:text-gray-400'
+              : 'absolute right-2 top-2 transition-all hover:text-gray-400'
+          }
+          onClick={() => setIntersectionToggle(!intersectionToggle)}
+        >
+          {!intersectionToggle ? 'Check' : 'Close'}
         </button>
       </div>
       {toggleInfo ? (
@@ -391,7 +408,12 @@ export default function Map() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <DynamicCircleRadius />
-        {panToCoords ? <RecenterMap panToCoords={panToCoords} /> : null}
+        {panToCoords ? (
+          <RecenterMap
+            panToCoords={panToCoords}
+            setPanToCoords={setPanToCoords}
+          />
+        ) : null}
         {/* Call anything you want to add to the map here. */}
         <LayersControl position="bottomleft">
           <LayersControl.Overlay name="Sector Lobes" checked>
