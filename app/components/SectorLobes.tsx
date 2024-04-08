@@ -13,7 +13,6 @@ import SectorLobe from './SectorLobe';
 import { useAppSelector } from '../../lib/hooks';
 
 // Types are temporary until the API is up and running
-// import { AccessPoint, ReducedPoints, SectorLobesProps } from '../types';
 import { AccessPoint, ReducedPoints } from '../types';
 
 export default function SectorLobes() {

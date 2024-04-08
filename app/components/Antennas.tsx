@@ -1,4 +1,3 @@
-import React from 'react';
 import { Circle, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 

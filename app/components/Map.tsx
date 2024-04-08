@@ -7,7 +7,7 @@ import {
   LayerGroup,
   useMap,
 } from 'react-leaflet';
-// import L from 'leaflet';
+
 import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -19,14 +19,9 @@ import Antennas from './Antennas';
 import SectorLobes from './SectorLobes';
 import AntennaInfo from './AntennaInfo';
 
-// Temporary until the API is up and running
-import access_points from '../../access_points.json';
-import { Device } from '../accessPointTypes';
-
 import { useAppSelector, useAppDispatch, useAppStore } from '../../lib/hooks';
 
-// import { AccessPoint, Antenna } from '../types';
-import { AccessPoint, SectorlobeData } from '../types';
+import { AccessPoint, SectorlobeData, Antenna } from '../types';
 
 import { initializeActual } from '../../lib/features/actual/actualSlice';
 
@@ -147,43 +142,43 @@ export default function Map() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // async function fetchData(path: string, maxRetries = 3, retryDelay = 1000) {
-    //   for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    //     try {
-    //       const response = await fetch(path);
-    //       if (!response.ok) {
-    //         throw new Error(`${response.status} error: Failed to fetch`);
-    //       }
+    async function fetchData(path: string, maxRetries = 3, retryDelay = 1000) {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await fetch(path);
+          if (!response.ok) {
+            throw new Error(`${response.status} error: Failed to fetch`);
+          }
 
-    //       const responseJson = (await response.json()) as Antenna[];
-    //       console.log('Antennas Data:', responseJson);
-    //       return responseJson;
-    //     } catch (e) {
-    //       if (e instanceof Error) {
-    //         console.error(`Attempt ${attempt} failed: ${e.message}`);
-    //         if (attempt === maxRetries) throw e; // Rethrow error on last attempt
-    //         await new Promise((resolve) => setTimeout(resolve, retryDelay)); // Wait before retrying
-    //       }
-    //     }
-    //   }
-    // }
+          const responseJson = (await response.json()) as Antenna[];
+          console.log('Antennas Data:', responseJson);
+          return responseJson;
+        } catch (e) {
+          if (e instanceof Error) {
+            console.error(`Attempt ${attempt} failed: ${e.message}`);
+            if (attempt === maxRetries) throw e; // Rethrow error on last attempt
+            await new Promise((resolve) => setTimeout(resolve, retryDelay)); // Wait before retrying
+          }
+        }
+      }
+    }
 
-    const fetchDataAndSetAntennasData = () => {
-      // const url = '/api/v1/antenna/';
+    const fetchDataAndSetAntennasData = async () => {
+      const url = '/api/v1/antenna/';
       try {
-        const accessPoints = access_points;
+        const accessPoints = await fetchData(url);
         if (accessPoints) {
           const antennasData: AccessPoint[] = accessPoints.map(
-            (ap: Device) => ({
-              id: ap.identification.id,
-              modelName: ap.identification.modelName,
-              lat: ap.location.latitude.toString(),
-              lon: ap.location.longitude.toString(),
-              frequency: ap.overview.frequency || 0,
-              azimuth: ap.location.heading || 0,
-              antenna_status: ap.overview.status || 'N/A',
-              cpu: ap.overview.cpu || -1,
-              ram: ap.overview.ram || -1,
+            (ap: Antenna) => ({
+              id: ap.id,
+              modelName: ap.modelname,
+              lat: ap.latitude,
+              lon: ap.longitude,
+              frequency: ap.frequency || 0,
+              azimuth: ap.azimuth || 0,
+              antenna_status: ap.antenna_status || 'N/A',
+              cpu: ap.cpu || -1,
+              ram: ap.ram || -1,
             })
           );
 
@@ -214,10 +209,9 @@ export default function Map() {
       }
     };
 
-    // fetchDataAndSetAntennasData().catch((error) => {
-    //   console.error(error);
-    // });
-    fetchDataAndSetAntennasData();
+    fetchDataAndSetAntennasData().catch((error) => {
+      console.error(error);
+    });
   }, [store]);
 
   useEffect(() => {
@@ -371,16 +365,18 @@ export default function Map() {
             }
           />
         ) : null}
-        <button
-          className={
-            !intersectionToggle
-              ? 'transition-all hover:text-gray-400'
-              : 'absolute right-2 top-2 transition-all hover:text-gray-400'
-          }
-          onClick={() => setIntersectionToggle(!intersectionToggle)}
-        >
-          {!intersectionToggle ? 'Check' : 'Close'}
-        </button>
+        {intersections.length > 0 ? (
+          <button
+            className={
+              !intersectionToggle
+                ? 'transition-all hover:text-gray-400'
+                : 'absolute right-2 top-2 transition-all hover:text-gray-400'
+            }
+            onClick={() => setIntersectionToggle(!intersectionToggle)}
+          >
+            {!intersectionToggle ? 'Check' : 'Close'}
+          </button>
+        ) : null}
       </div>
       {toggleInfo ? (
         <AntennaInfo
