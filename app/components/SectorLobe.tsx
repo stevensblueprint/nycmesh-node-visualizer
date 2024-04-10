@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Polygon, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -6,20 +6,76 @@ import { LatLngExpression } from 'leaflet';
 
 import { SectorLobeProps } from '../types';
 
-export default function SectorLobe({ key, val }: SectorLobeProps) {
+import { useAppSelector, useAppDispatch } from '../../lib/hooks';
+
+import { updateCurrent } from '@/lib/features/currentAntennas/currentAntennasSlice';
+
+export default function SectorLobe({
+  key_path,
+  val,
+  ap,
+  freqRange,
+}: SectorLobeProps) {
+  const currentMode = useAppSelector(
+    (state) => state.currentAntennas.value.mode
+  );
+  const dispatch = useAppDispatch();
+
   const center: LatLngExpression = [
     parseFloat(val.lat.trim()),
     parseFloat(val.lon.trim()),
   ];
-  const [radiusInMeters, setRadiusInMeters] = useState(100); // Adjust this as needed
-  const [sectorWidth, setSectorWidth] = useState(45);
-  const [heading, setHeading] = useState(0);
+  const radiusInMeters = 100;
+  const sectorWidth = 45;
+
+  const getColor = useCallback(
+    (freq: number = ap.frequency) => {
+      const section = (freqRange[1] - freqRange[0]) / 5;
+      if (freq >= freqRange[0] && freq < freqRange[0] + section) {
+        return '#43a047';
+      } else if (
+        freq >= freqRange[0] + section &&
+        freq < freqRange[0] + section * 2
+      ) {
+        return '#679e20';
+      } else if (
+        freq >= freqRange[0] + section * 2 &&
+        freq < freqRange[0] + section * 3
+      ) {
+        return '#8c9a00';
+      } else if (
+        freq >= freqRange[0] + section * 3 &&
+        freq < freqRange[0] + section * 4
+      ) {
+        return '#b29000';
+      } else if (freq >= freqRange[0] + section * 4 && freq <= freqRange[1]) {
+        return '#d98000';
+      }
+      return '#ff6600';
+    },
+    [ap.frequency, freqRange]
+  );
+
+  const [heading, setHeading] = useState(ap.azimuth);
+  const [freq, setFreq] = useState(ap.frequency);
+  const [color, setColor] = useState(getColor());
+  const [currentAp, setCurrentAp] = useState(ap);
 
   // holds previous values in case they do not want to commit
-  const [tempRadius, setTempRadius] = useState(100);
-  const [tempSectorWidth, setTempSectorWidth] = useState(45);
-  const [tempHeading, setTempHeading] = useState(0);
+  const [tempHeading, setTempHeading] = useState(ap.azimuth);
+  const [tempFreq, setTempFreq] = useState(ap.frequency);
 
+  // Won't update if the ap changes without useEffect
+  useEffect(() => {
+    setHeading(ap.azimuth);
+    setFreq(ap.frequency);
+    setCurrentAp(ap);
+    setColor(getColor(ap.frequency));
+    setTempHeading(ap.azimuth);
+    setTempFreq(ap.frequency);
+  }, [ap, getColor]);
+
+  let radius: number = 0;
   const radiusRange: number[][] = [
     [0, 45],
     [45, 135],
@@ -27,7 +83,6 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
     [225, 315],
     [315, 360],
   ];
-  let radius: number = 0;
   if (heading < radiusRange[0][1]) {
     // 0-45
     radius = radiusInMeters;
@@ -72,12 +127,10 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
   );
   sectorVertices.push(center);
 
-  function handleChangeRadius(e: React.ChangeEvent<HTMLInputElement>) {
-    setTempRadius(Number(e.target.value));
-  }
-
-  function handleChangeSectorWidth(e: React.ChangeEvent<HTMLInputElement>) {
-    setTempSectorWidth(Number(e.target.value));
+  function handleChangeFreq(e: React.ChangeEvent<HTMLInputElement>) {
+    const currFreq = Number(e.target.value);
+    setTempFreq(currFreq);
+    setColor(getColor(currFreq));
   }
 
   function handleChangeHeading(e: React.ChangeEvent<HTMLInputElement>) {
@@ -85,7 +138,7 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
     if (numChange < 0) {
       numChange = 0;
     } else if (numChange >= 360) {
-      numChange = 359;
+      numChange = 0;
     }
     setTempHeading(numChange);
   }
@@ -94,70 +147,75 @@ export default function SectorLobe({ key, val }: SectorLobeProps) {
     e: React.FormEvent<HTMLFormElement> | React.MouseEvent
   ) {
     e.preventDefault();
-    setRadiusInMeters(tempRadius);
-    setSectorWidth(tempSectorWidth);
     setHeading(tempHeading);
+    setFreq(tempFreq);
+    const newAp = { ...currentAp };
+    newAp.azimuth = tempHeading;
+    newAp.frequency = tempFreq;
+
+    setCurrentAp(newAp);
+    if (currentMode === 'playground') {
+      dispatch(updateCurrent(newAp));
+    }
   }
 
   function handleCancel() {
-    setTempRadius(radiusInMeters);
-    setTempSectorWidth(sectorWidth);
     setTempHeading(heading);
+    setTempFreq(freq);
   }
 
   return (
     <Polygon
       positions={sectorVertices}
-      color="blue"
+      color={color}
       fillOpacity={0.5}
       weight={1}
-      key={String(key)}
+      key={String(key_path)}
     >
       <Popup>
         <form
           className="flex flex-col"
-          id={`form ${String(key)}`}
+          id={`form ${String(key_path)}`}
           onSubmit={(e) => handleCommit(e)}
         >
-          <p>Change Sector Lobe</p>
+          <p>Change Sector Lobe of {ap.id}</p>
           <div className="my-2 flex flex-row">
-            <label htmlFor="radius">Radius: </label>
-            <input
-              className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
-              type="text"
-              name="radius"
-              id="radius"
-              value={String(tempRadius)}
-              placeholder={String(radiusInMeters)}
-              onChange={(e) => handleChangeRadius(e)}
-            />{' '}
-            m
+            <label htmlFor="sectorwidth" className="mx-2">
+              Frequency:{' '}
+            </label>
+            {currentMode === 'playground' ? (
+              <input
+                className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
+                type="text"
+                name="sectorwidth"
+                id="sectorwidth"
+                value={String(tempFreq)}
+                placeholder={String(freq)}
+                onChange={(e) => handleChangeFreq(e)}
+              />
+            ) : (
+              `${freq} `
+            )}
+            Hz
           </div>
           <div className="my-2 flex flex-row">
-            <label htmlFor="sectorwidth">Beam Width: </label>
-            <input
-              className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
-              type="text"
-              name="sectorwidth"
-              id="sectorwidth"
-              value={String(tempSectorWidth)}
-              placeholder={String(sectorWidth)}
-              onChange={(e) => handleChangeSectorWidth(e)}
-            />{' '}
-            degrees
-          </div>
-          <div className="my-2 flex flex-row">
-            <label htmlFor="heading">Heading: </label>
-            <input
-              className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
-              type="text"
-              name="heading"
-              id="heading"
-              value={String(tempHeading)}
-              placeholder={String(heading)}
-              onChange={(e) => handleChangeHeading(e)}
-            />{' '}
-            degrees
+            <label htmlFor="heading" className="mx-2">
+              Heading:
+            </label>
+            {currentMode === 'playground' ? (
+              <input
+                className="mx-2 rounded-md border-2 border-slate-400 hover:bg-slate-200 focus:border-black"
+                type="text"
+                name="heading"
+                id="heading"
+                value={String(tempHeading)}
+                placeholder={String(heading)}
+                onChange={(e) => handleChangeHeading(e)}
+              />
+            ) : (
+              `${heading}`
+            )}
+            &deg;
           </div>
           <div className="flex flex-row justify-between">
             <button

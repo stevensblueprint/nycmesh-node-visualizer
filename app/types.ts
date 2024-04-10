@@ -1,3 +1,5 @@
+import { LatLngExpression, LatLngTuple } from 'leaflet';
+
 // Interfaces
 export type Antenna = {
   id: string;
@@ -37,6 +39,13 @@ export interface ReducedPoints {
   [key: string]: ReducedContent;
 }
 
+export interface SectorlobeData {
+  id: string;
+  center: LatLngTuple;
+  sectorVertices: LatLngExpression[];
+  frequency: number;
+}
+
 // Props
 
 export interface InfoProps {
@@ -44,14 +53,20 @@ export interface InfoProps {
   setCurrentAntenna: React.Dispatch<React.SetStateAction<AccessPoint | null>>;
   getToggle: boolean;
   changeToggle: () => void;
-  antennasData: AccessPoint[];
 }
 export interface SectorLobesProps {
   antennasData: AccessPoint[];
 }
+
+export interface SectorLobesProps {
+  antennasData: AccessPoint[];
+}
+
 export interface SectorLobeProps {
-  key: string;
+  key_path: string;
   val: ReducedContent;
+  ap: AccessPoint;
+  freqRange: [number, number];
 }
 
 export interface AntennaInfoProps {

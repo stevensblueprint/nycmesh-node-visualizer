@@ -1,4 +1,7 @@
 import { Circle, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Types are temporary until the API is up and running
 import {
   AccessPoint,
   InfoProps,
@@ -6,14 +9,17 @@ import {
   ReducedContent,
 } from '../types';
 
+import { useAppSelector } from '../../lib/hooks';
+
 export default function Antennas({
   currentAntenna,
   setCurrentAntenna,
   getToggle,
-  antennasData,
   changeToggle,
 }: InfoProps) {
-  const antennas: AccessPoint[] = antennasData;
+  const antennasData = useAppSelector((state) => state.currentAntennas.value);
+
+  const antennas: AccessPoint[] = antennasData.data;
   const reducedAntennas: ReducedPoints = {};
 
   for (let i = 0; i < antennas.length; i++) {
@@ -82,7 +88,7 @@ export default function Antennas({
       >
         {/* Create a popup which has the names of all antennas at some node */}
         <Popup>
-          <div className="m-0 p-0">
+          <div className="m-0 p-0" key={`${value[0]}_popup`}>
             Access Points: {value[1].points.length}
             {convertPoints(value[1].points)}
           </div>
