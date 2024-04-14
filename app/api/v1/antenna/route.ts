@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { pool } from '../connection';
 import { isAntenna, Antenna } from '@/app/api/v1/antenna/validate';
 import StatusError from '@/app/api/(utils)/StatusError';
+import { labeledFrequencies } from '@/app/types';
 
 export async function GET() {
   try {
@@ -17,25 +18,25 @@ export async function GET() {
   }
 }
 
+// request body should be:
+// {
+//   "dataArray": [
+//     {labeledFrequencies}
+//   ]
+// }
 export async function PUT(request: Request) {
   const updatedAntennas: Antenna[] = [];
   try {
-    const { ids, newFrequencies } = (await request.json()) as {
-      ids: number[];
-      newFrequencies: number[];
-    };
-
+    const { dataArray }: { dataArray: labeledFrequencies[] } =
+      (await request.json()) as { dataArray: labeledFrequencies[] };
     const client = await pool.connect();
 
-    for (let i = 0; i < ids.length; i++) {
-      const id = ids[i];
-      const frequency = newFrequencies[i];
-
+    for (const { id, frequency } of dataArray) {
       const query = `
-        UPDATE Antennas
-        SET playground_frequency = $1
-        WHERE id = $2
-        RETURNING *
+      UPDATE Antennas
+      SET playground_frequency = $1
+      WHERE id = $2
+      RETURNING *
       `;
       const result = await client.query(query, [frequency, id]);
       if (result.rowCount === 0) {
@@ -44,7 +45,7 @@ export async function PUT(request: Request) {
       if (!isAntenna(result.rows[0])) {
         throw new StatusError(
           500,
-          'Antenna must be updated with correct data types / values.'
+          'Antenna must be updated with correct data types/values'
         );
       }
       const updatedAntenna = result.rows[0];

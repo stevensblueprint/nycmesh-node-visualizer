@@ -20,6 +20,11 @@ export interface ReducedPoints {
   [key: string]: ReducedContent;
 }
 
+export interface labeledFrequencies {
+  id: number;
+  frequency: number;
+}
+
 // Props
 
 export interface InfoProps {
