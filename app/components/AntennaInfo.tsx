@@ -24,7 +24,9 @@ export default function AntennaInfo({
         <div className="">
           <p>ID: {currentAntenna && currentAntenna.id}</p>
           <p>Model Name: {currentAntenna && currentAntenna.modelName}</p>
-          <p>Status: {currentAntenna && currentAntenna.status}</p>
+          <p>Azimuth: {currentAntenna && currentAntenna.azimuth}</p>
+          <p>Frequency: {currentAntenna && currentAntenna.frequency}</p>
+          <p>Stats: {currentAntenna && currentAntenna.antenna_status}</p>
           <p>CPU: {currentAntenna && currentAntenna.cpu}</p>
           <p>RAM: {currentAntenna && currentAntenna.ram}</p>
         </div>
