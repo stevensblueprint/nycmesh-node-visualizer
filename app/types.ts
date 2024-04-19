@@ -47,7 +47,8 @@ export interface SectorlobeData {
   id: string;
   center: LatLngTuple;
   sectorVertices: LatLngExpression[];
-}  
+  frequency: number;
+}
 // Props
 
 export interface InfoProps {
