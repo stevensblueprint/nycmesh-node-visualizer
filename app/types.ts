@@ -39,13 +39,16 @@ export interface ReducedPoints {
   [key: string]: ReducedContent;
 }
 
+export interface labeledFrequencies {
+  id: number;
+  frequency: number;
+}
 export interface SectorlobeData {
   id: string;
   center: LatLngTuple;
   sectorVertices: LatLngExpression[];
   frequency: number;
 }
-
 // Props
 
 export interface InfoProps {

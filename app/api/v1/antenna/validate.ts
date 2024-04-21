@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export type Antenna = {
-  id: string;
+  id: number;
   name: string;
   hostname: string;
   model: string;
@@ -9,17 +9,17 @@ export type Antenna = {
   frequency: number;
   playground_frequency: number;
   latitude: string;
-  longitude: number;
+  longitude: string;
   azimuth: number;
-  typeAntenna: number;
+  typeantenna: number;
   antenna_status: string;
   cpu: number;
-  ram: string;
+  ram: number;
 };
 
 export function isAntenna(antenna: unknown): antenna is Antenna {
   const antennaSchema = z.object({
-    id: z.string(),
+    id: z.number(),
     name: z.string(),
     hostname: z.string(),
     model: z.string(),
@@ -29,9 +29,10 @@ export function isAntenna(antenna: unknown): antenna is Antenna {
     latitude: z.string(),
     longitude: z.string(),
     azimuth: z.number().int().gte(0).lt(360),
-    typeAntenna: z.number().gte(0).lte(2),
-    cpu: z.string(),
-    ram: z.string(),
+    typeantenna: z.number().gte(0).lte(2),
+    antenna_status: z.string(),
+    cpu: z.number(),
+    ram: z.number(),
   });
 
   const res = antennaSchema.safeParse(antenna);

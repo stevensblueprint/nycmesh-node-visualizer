@@ -4,9 +4,9 @@ import { isAntenna } from '@/app/api/v1/antenna/validate';
 import { pool } from '@/app/api/v1/connection';
 import StatusError from '@/app/api/(utils)/StatusError';
 
-export async function DELETE(_: Request, context: { params: { id: string } }) {
+export async function DELETE(_: Request, context: { params: { id: number } }) {
   try {
-    if (context.params.id.trim().length == 0)
+    if (!context.params.id)
       throw new StatusError(
         500,
         'Internal Error: Id is missing from parameter'
@@ -39,6 +39,60 @@ export async function DELETE(_: Request, context: { params: { id: string } }) {
     let status = 500;
     if (error instanceof Error) message = error.message;
     if (error instanceof StatusError) status = error.status;
+    return NextResponse.json({ message }, { status });
+  }
+}
+export async function PUT(
+  request: Request,
+  context: { params: { id: number } }
+) {
+  try {
+    if (!context.params.id) {
+      throw {
+        status: 500,
+        message: 'Internal Error: Id is missing from parameter',
+      };
+    }
+
+    const id = context.params.id;
+
+    const { frequency } = (await request.json()) as { frequency: number };
+
+    const client = await pool.connect();
+
+    const query = `
+      UPDATE Antennas
+      SET playground_frequency = $1
+      WHERE id = $2
+      RETURNING *;
+      `;
+    const result = await client.query(query, [frequency, id]);
+
+    if (result.rowCount === 0) {
+      throw new StatusError(404, `Antenna with ${id} does not exist.`);
+    }
+    if (!isAntenna(result.rows[0])) {
+      throw new StatusError(
+        500,
+        'Antenna must be updated with correct data types / values.'
+      );
+    }
+
+    const updatedAntenna = result.rows[0];
+
+    client.release();
+
+    return NextResponse.json(updatedAntenna, { status: 200 });
+  } catch (error) {
+    let message = 'Internal Server Error';
+    let status = 500;
+    if (typeof error === 'object') {
+      if (error && 'message' in error && typeof error.message === 'string')
+        message = error.message;
+      if (error && 'status' in error && typeof error.status === 'number')
+        status = error.status;
+    }
+
     return NextResponse.json({ message }, { status });
   }
 }
