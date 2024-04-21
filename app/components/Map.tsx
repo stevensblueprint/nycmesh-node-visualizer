@@ -29,6 +29,8 @@ import {
   initializePlayground,
   replacePlayground,
   replaceOldPlayground,
+  clearToUpdatePlayground,
+  replaceToUpdatePlayground,
 } from '../../lib/features/playground/playgroundSlice';
 
 import {
@@ -139,6 +141,8 @@ export default function Map() {
 
   const antennasData = useAppSelector((state) => state.currentAntennas.value);
 
+  const toBeUpdated = useAppSelector((state) => state.playground.toBeUpdated);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -151,7 +155,7 @@ export default function Map() {
           }
 
           const responseJson = (await response.json()) as Antenna[];
-          console.log('Antennas Data:', responseJson);
+
           return responseJson;
         } catch (e) {
           if (e instanceof Error) {
@@ -182,9 +186,23 @@ export default function Map() {
             })
           );
 
+          const playgroundAntennasData: AccessPoint[] = accessPoints.map(
+            (ap: Antenna) => ({
+              id: ap.id,
+              modelName: ap.modelname,
+              lat: ap.latitude,
+              lon: ap.longitude,
+              frequency: ap.playground_frequency || 0,
+              azimuth: ap.azimuth || 0,
+              antenna_status: ap.antenna_status || 'N/A',
+              cpu: ap.cpu || -1,
+              ram: ap.ram || -1,
+            })
+          );
+
           if (!initialized.current) {
             store.dispatch(initializeActual(antennasData));
-            store.dispatch(initializePlayground(antennasData));
+            store.dispatch(initializePlayground(playgroundAntennasData));
             store.dispatch(initializeCurrent(antennasData));
             initialized.current = true;
           }
@@ -212,7 +230,8 @@ export default function Map() {
     fetchDataAndSetAntennasData().catch((error) => {
       console.error(error);
     });
-  }, [store]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const sectorlobesData: SectorlobeData[] = antennasData.data.map((ap) => {
@@ -346,6 +365,43 @@ export default function Map() {
     return amount;
   }, [intersections]);
 
+  const handleSavePlayground = async () => {
+    const url = '/api/v1/antenna/';
+    if (toBeUpdated.length === 0) {
+      alert('No changes to save');
+      return;
+    }
+    for (let i = 0; i < 3; i++) {
+      try {
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ dataArray: toBeUpdated }),
+        });
+        if (!response.ok) {
+          throw new Error(
+            `${response.status} error: Failed to save playground data`
+          );
+        }
+        dispatch(replacePlayground(antennasData.data));
+        dispatch(replaceOldPlayground(antennasData.data));
+        dispatch(clearToUpdatePlayground());
+        alert('Playground data saved successfully');
+        break;
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(`Attempt ${i + 1} failed: ${e.message}`);
+          if (i === 2) {
+            alert('Failed to save playground data');
+          }
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+      }
+    }
+  };
+
   return (
     <>
       <div className="absolute right-0 top-0 z-[1001] flex flex-col justify-center rounded-md bg-black p-2">
@@ -431,48 +487,88 @@ export default function Map() {
       </MapContainer>
       <div className="m-5 flex flex-row justify-between align-middle">
         <div className="flex flex-row justify-center">
-          <h1 className="mx-2 p-1 align-baseline">Current mode: </h1>
-          <button
-            className="rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
-            onClick={() => {
-              if (antennasData.mode === 'actual') {
-                dispatch(
-                  changeCurrent({
-                    mode: 'playground',
-                    data: playgroundData,
-                  })
-                );
-              } else {
-                dispatch(replacePlayground(antennasData.data));
-                dispatch(
-                  changeCurrent({
-                    mode: 'actual',
-                    data: actualData,
-                  })
-                );
-              }
-            }}
-          >
-            {antennasData.mode === 'actual' ? 'Current' : 'Playground'}
-          </button>
+          <div>
+            <button
+              className="rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
+              onClick={() => alert('Updating from NYCMesh server...')}
+            >
+              Update from Server
+            </button>
+          </div>
+          <div className="flex flex-row justify-center">
+            <h1 className="mx-2 p-1 align-baseline">Current mode: </h1>
+            <button
+              className="rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
+              onClick={() => {
+                if (antennasData.mode === 'actual') {
+                  dispatch(
+                    changeCurrent({
+                      mode: 'playground',
+                      data: playgroundData,
+                    })
+                  );
+                } else {
+                  dispatch(replacePlayground(antennasData.data));
+                  dispatch(
+                    changeCurrent({
+                      mode: 'actual',
+                      data: actualData,
+                    })
+                  );
+                }
+              }}
+            >
+              {antennasData.mode === 'actual' ? 'Current' : 'Playground'}
+            </button>
+          </div>
         </div>
         {antennasData.mode === 'playground' ? (
           <div>
             <button
               className="mx-2 rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
               onClick={() => {
+                if (toBeUpdated.length > 0) {
+                  dispatch(replaceToUpdatePlayground([]));
+                }
+                const updatedData: AccessPoint[] = actualData.filter(
+                  (antenna) => {
+                    return (
+                      playgroundData.find(
+                        (oldAntenna) =>
+                          oldAntenna.id === antenna.id &&
+                          oldAntenna.frequency === antenna.frequency &&
+                          oldAntenna.azimuth === antenna.azimuth
+                      ) === undefined
+                    );
+                  }
+                );
+                if (updatedData.length > 0) {
+                  dispatch(replaceToUpdatePlayground(updatedData));
+                }
                 dispatch(
-                  changeCurrent({ mode: 'playground', data: oldPlaygroundData })
+                  changeCurrent({
+                    mode: 'playground',
+                    data: actualData,
+                  })
                 );
               }}
             >
-              Revert Changes
+              Revert All Changes
             </button>
             <button
               className="mx-2 rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
               onClick={() => {
-                dispatch(replaceOldPlayground(antennasData.data));
+                dispatch(
+                  changeCurrent({ mode: 'playground', data: oldPlaygroundData })
+                );
+                dispatch(clearToUpdatePlayground());
               }}
+            >
+              Revert Current Changes
+            </button>
+            <button
+              className="mx-2 rounded-md border-[1px] border-black bg-gray-400 p-1 transition-all duration-300 ease-in-out hover:bg-gray-900"
+              onClick={() => void handleSavePlayground()}
             >
               Save Changes
             </button>

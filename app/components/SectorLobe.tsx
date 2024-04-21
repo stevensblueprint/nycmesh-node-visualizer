@@ -9,6 +9,7 @@ import { SectorLobeProps } from '../types';
 import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 
 import { updateCurrent } from '@/lib/features/currentAntennas/currentAntennasSlice';
+import { addToUpdatePlayground } from '@/lib/features/playground/playgroundSlice';
 
 export default function SectorLobe({
   key_path,
@@ -152,14 +153,17 @@ export default function SectorLobe({
     const newAp = { ...currentAp };
     newAp.azimuth = tempHeading;
     newAp.frequency = tempFreq;
-
     setCurrentAp(newAp);
     if (currentMode === 'playground') {
+      dispatch(addToUpdatePlayground(newAp));
       dispatch(updateCurrent(newAp));
     }
   }
 
-  function handleCancel() {
+  function handleCancel(
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) {
+    e.preventDefault();
     setTempHeading(heading);
     setTempFreq(freq);
   }
@@ -169,14 +173,14 @@ export default function SectorLobe({
       positions={sectorVertices}
       color={color}
       fillOpacity={0.5}
-      weight={1}
+      weight={3}
       key={String(key_path)}
     >
       <Popup>
         <form
           className="flex flex-col"
           id={`form ${String(key_path)}`}
-          onSubmit={(e) => handleCommit(e)}
+          // onSubmit={(e) => handleCommit(e)}
         >
           <p>Change Sector Lobe of {ap.id}</p>
           <div className="my-2 flex flex-row">
@@ -217,21 +221,25 @@ export default function SectorLobe({
             )}
             &deg;
           </div>
-          <div className="flex flex-row justify-between">
-            <button
-              className="rounded-md border-[1px] border-black bg-green-300 p-1 hover:bg-green-900"
-              onClick={(e) => handleCommit(e)}
-              type="submit"
-            >
-              Save
-            </button>
-            <button
-              className="rounded-md border-[1px] border-black bg-red-400 p-1 hover:bg-red-900"
-              onClick={() => handleCancel()}
-            >
-              Cancel
-            </button>
-          </div>
+          {currentMode === 'playground' ? (
+            <div className="flex flex-row justify-between">
+              <button
+                className="rounded-md border-[1px] border-black bg-green-300 p-1 hover:bg-green-900"
+                onClick={(e) => handleCommit(e)}
+                type="submit"
+              >
+                Save
+              </button>
+              <button
+                className="rounded-md border-[1px] border-black bg-red-400 p-1 hover:bg-red-900"
+                onClick={(e) => handleCancel(e)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </form>
       </Popup>
     </Polygon>
