@@ -18,6 +18,7 @@ import { Position } from 'geojson';
 import Antennas from './Antennas';
 import SectorLobes from './SectorLobes';
 import AntennaInfo from './AntennaInfo';
+import SideLobes from './SideLobes';
 
 import { useAppSelector, useAppDispatch, useAppStore } from '../../lib/hooks';
 
@@ -468,6 +469,11 @@ export default function Map() {
         ) : null}
         {/* Call anything you want to add to the map here. */}
         <LayersControl position="bottomleft">
+          <LayersControl.Overlay name="Side Lobes" checked>
+            <LayerGroup>
+              <SideLobes />
+            </LayerGroup>
+          </LayersControl.Overlay>
           <LayersControl.Overlay name="Sector Lobes" checked>
             <LayerGroup>
               <SectorLobes />
