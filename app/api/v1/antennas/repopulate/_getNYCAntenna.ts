@@ -9,6 +9,8 @@ function convertAntenna(ant: unknown): NYCAntenna {
   if (typeof ant !== 'object' || ant == null || ant == undefined)
     throw new StatusError(500, `Antenna provided is invalid.\n${String(ant)}`);
 
+  let identification, overview, location;
+
   if (
     'identification' in ant === false ||
     typeof ant.identification !== 'object' ||
@@ -21,14 +23,14 @@ function convertAntenna(ant: unknown): NYCAntenna {
     throw new StatusError(500, 'hostname' + ' is missing from NYCMesh.');
   else if ('model' in ant.identification === false)
     throw new StatusError(500, 'model' + ' is missing from NYCMesh.');
-  else if ('modelname' in ant.identification === false)
-    throw new StatusError(500, 'modelname' + ' is missing from NYCMesh.');
-
-  const identification = ant.identification as object &
-    Record<'name', unknown> &
-    Record<'hostname', unknown> &
-    Record<'model', unknown> &
-    Record<'modelname', unknown>;
+  else if ('modelName' in ant.identification === false)
+    throw new StatusError(500, 'modelName' + ' is missing from NYCMesh.');
+  else
+    identification = ant.identification as object &
+      Record<'name', unknown> &
+      Record<'hostname', unknown> &
+      Record<'model', unknown> &
+      Record<'modelName', unknown>;
 
   if (
     'overview' in ant === false ||
@@ -44,42 +46,43 @@ function convertAntenna(ant: unknown): NYCAntenna {
     throw new StatusError(500, 'ram' + ' is missing from NYCMesh.');
   else if ('status' in ant.overview === false)
     throw new StatusError(500, 'status' + ' is missing from NYCMesh.');
+  else
+    overview = ant.overview as object &
+      Record<'frequency', unknown> &
+      Record<'cpu', unknown> &
+      Record<'ram', unknown> &
+      Record<'status', unknown>;
 
-  const overview = ant.overview as object &
-    Record<'frequency', unknown> &
-    Record<'cpu', unknown> &
-    Record<'ram', unknown> &
-    Record<'status', unknown>;
-
-  if (
-    'location' in ant === false ||
-    typeof ant.location !== 'object' ||
-    ant.location === null
-  )
+  if ('location' in ant === false)
     throw new StatusError(500, 'location' + ' is missing from NYCMesh.');
+  else if (typeof ant.location !== 'object' || ant.location === null)
+    location = null;
   else if ('latitude' in ant.location === false)
     throw new StatusError(500, 'latitude' + ' is missing from NYCMesh.');
   else if ('longitude' in ant.location === false)
     throw new StatusError(500, 'longitude' + ' is missing from NYCMesh.');
   else if ('heading' in ant.location === false)
     throw new StatusError(500, 'azimuth' + ' is missing from NYCMesh.');
-
-  const location = ant.location as object &
-    Record<'latitude', unknown> &
-    Record<'longitude', unknown> &
-    Record<'heading', unknown>;
+  else
+    location = ant.location as object &
+      Record<'latitude', unknown> &
+      Record<'longitude', unknown> &
+      Record<'heading', unknown>;
 
   const azimuthType = 2; // TODO: Still need to check for typeAntenna?
   const antenna: unknown = {
     name: identification.name,
     hostname: identification.hostname,
     model: identification.model,
-    modelName: identification.modelname,
+    modelName: identification.modelName,
     frequency: overview.frequency,
     playground_frequency: overview.frequency,
-    latitude: location.latitude,
-    longitude: location.longitude,
-    azimuth: location.heading ?? 0,
+    latitude: location === null ? null : String(location.latitude),
+    longitude: location === null ? null : String(location.longitude),
+    azimuth:
+      location === null || location.heading === null || location.heading === 0
+        ? null
+        : location.heading,
     typeAntenna: azimuthType,
     antenna_status: overview.status,
     cpu: overview.cpu ?? null,
@@ -89,7 +92,14 @@ function convertAntenna(ant: unknown): NYCAntenna {
   if (isNYCAntenna(antenna)) {
     return antenna;
   } else
-    throw new StatusError(500, 'Incorrect type fetched from nycmesh database.');
+    throw new StatusError(
+      500,
+      `Incorrect type fetched from nycmesh database.\n\n${JSON.stringify(
+        antenna,
+        undefined,
+        2
+      )}`
+    );
 }
 
 function convertAntennas(data: unknown): NYCAntenna[] {
@@ -137,3 +147,14 @@ export async function getNYCAntenna(): Promise<NYCAntenna[]> {
 
   return convertAntennas(dataRes.data);
 }
+
+// import fs from 'fs';
+
+// export async function getNYCAntenna2(): Promise<NYCAntenna[]> {
+//   const data = fs.readFileSync('./tests/endpoints/test.json', 'utf8');
+//   const jsonObj: unknown = JSON.parse(data);
+
+//   if (typeof jsonObj === 'object' && jsonObj != null && 'data' in jsonObj) {
+//     return await new Promise((res) => res(jsonObj.data as NYCAntenna[]));
+//   } else throw new StatusError(500, 'fetching json failed.');
+// }
