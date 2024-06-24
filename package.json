@@ -18,7 +18,7 @@
     "@turf/helpers": "^7.0.0-alpha.114",
     "@turf/intersect": "^7.0.0-alpha.114",
     "cors": "^2.8.5",
-    "cypress": "^13.6.4",
+    "cypress": "^13.12.0",
     "dotenv": "^16.4.2",
     "jest-environment-node": "^29.7.0",
     "leaflet": "^1.9.4",
