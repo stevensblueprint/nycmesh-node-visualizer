@@ -231,8 +231,7 @@ export default function Map() {
     fetchDataAndSetAntennasData().catch((error) => {
       console.error(error);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [store]);
 
   useEffect(() => {
     const sectorlobesData: SectorlobeData[] = antennasData.data.map((ap) => {
@@ -241,9 +240,9 @@ export default function Map() {
         parseFloat(ap.lon.trim()),
       ];
       const heading = ap.azimuth;
-      const radiusInMeters = 100;
+      const radiusInMeters = 1000;
       const sectorWidth = 45;
-      let radius: number = 0;
+      let radius: number = 1000;
 
       if (heading < 45) {
         // 0-45

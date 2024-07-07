@@ -5,25 +5,22 @@ import StatusError from '@/app/api/(utils)/StatusError';
 import { labeledFrequencies } from '@/app/types';
 
 export async function GET() {
+  let client;
   try {
-    const client = await pool.connect();
-    const result = await client.query('SELECT * FROM Antennas');
+    client = await pool.connect();
+    const result = await client.query('SELECT * FROM Antennas'); // Consider specifying columns if not all are needed
     const antennas = result.rows;
-    client.release();
     return NextResponse.json(antennas, { status: 200 });
   } catch (error) {
+    console.error(error);
     let message = 'Internal server error';
     if (error instanceof Error) message = error.message;
     return NextResponse.json({ message }, { status: 500 });
+  } finally {
+    client?.release();
   }
 }
 
-// request body should be:
-// {
-//   "dataArray": [
-//     {labeledFrequencies}
-//   ]
-// }
 export async function PUT(request: Request) {
   const updatedAntennas: Antenna[] = [];
   try {

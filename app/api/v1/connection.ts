@@ -4,11 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  port: process.env.POSTGRES_PORT
-    ? parseInt(process.env.POSTGRES_PORT)
-    : undefined,
-  database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOST || 'localhost',
+  database: process.env.POSTGRES_DB,
   password: process.env.POSTGRES_PASSWORD,
+  port: parseInt(process.env.POSTGRES_PORT || '5432'),
 });

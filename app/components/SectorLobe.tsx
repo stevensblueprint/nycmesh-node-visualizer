@@ -26,7 +26,7 @@ export default function SectorLobe({
     parseFloat(val.lat.trim()),
     parseFloat(val.lon.trim()),
   ];
-  const radiusInMeters = 100;
+  const radiusInMeters = 1500;
   const sectorWidth = 45;
 
   const getColor = useCallback(
