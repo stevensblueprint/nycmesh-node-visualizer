@@ -9,6 +9,7 @@ import { SectorLobeProps } from '../types';
 import { useAppSelector, useAppDispatch } from '../../lib/hooks';
 
 import { updateCurrent } from '@/lib/features/currentAntennas/currentAntennasSlice';
+import { addToUpdatePlayground } from '@/lib/features/playground/playgroundSlice';
 
 export default function SectorLobe({
   key_path,
@@ -25,7 +26,7 @@ export default function SectorLobe({
     parseFloat(val.lat.trim()),
     parseFloat(val.lon.trim()),
   ];
-  const radiusInMeters = 100;
+  const radiusInMeters = 1500;
   const sectorWidth = 45;
 
   const getColor = useCallback(
@@ -58,7 +59,7 @@ export default function SectorLobe({
 
   const [heading, setHeading] = useState(ap.azimuth);
   const [freq, setFreq] = useState(ap.frequency);
-  const [color, setColor] = useState(getColor());
+  // const [color, setColor] = useState(getColor(ap.frequency));
   const [currentAp, setCurrentAp] = useState(ap);
 
   // holds previous values in case they do not want to commit
@@ -70,10 +71,16 @@ export default function SectorLobe({
     setHeading(ap.azimuth);
     setFreq(ap.frequency);
     setCurrentAp(ap);
-    setColor(getColor(ap.frequency));
+    // setColor(getColor(ap.frequency));
     setTempHeading(ap.azimuth);
     setTempFreq(ap.frequency);
-  }, [ap, getColor]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ap]);
+
+  // useEffect(() => {
+  //   setColor(getColor(freq));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [freq]);
 
   let radius: number = 0;
   const radiusRange: number[][] = [
@@ -130,7 +137,7 @@ export default function SectorLobe({
   function handleChangeFreq(e: React.ChangeEvent<HTMLInputElement>) {
     const currFreq = Number(e.target.value);
     setTempFreq(currFreq);
-    setColor(getColor(currFreq));
+    // setColor(getColor(currFreq));
   }
 
   function handleChangeHeading(e: React.ChangeEvent<HTMLInputElement>) {
@@ -152,31 +159,36 @@ export default function SectorLobe({
     const newAp = { ...currentAp };
     newAp.azimuth = tempHeading;
     newAp.frequency = tempFreq;
-
     setCurrentAp(newAp);
     if (currentMode === 'playground') {
+      dispatch(addToUpdatePlayground(newAp));
       dispatch(updateCurrent(newAp));
     }
   }
 
-  function handleCancel() {
+  function handleCancel(
+    e: React.FormEvent<HTMLFormElement> | React.MouseEvent
+  ) {
+    e.preventDefault();
     setTempHeading(heading);
     setTempFreq(freq);
   }
 
   return (
     <Polygon
+      pathOptions={{
+        color: getColor(),
+        fillOpacity: 0.5,
+        weight: 3,
+      }}
       positions={sectorVertices}
-      color={color}
-      fillOpacity={0.5}
-      weight={1}
       key={String(key_path)}
     >
       <Popup>
         <form
           className="flex flex-col"
           id={`form ${String(key_path)}`}
-          onSubmit={(e) => handleCommit(e)}
+          // onSubmit={(e) => handleCommit(e)}
         >
           <p>Change Sector Lobe of {ap.id}</p>
           <div className="my-2 flex flex-row">
@@ -217,21 +229,25 @@ export default function SectorLobe({
             )}
             &deg;
           </div>
-          <div className="flex flex-row justify-between">
-            <button
-              className="rounded-md border-[1px] border-black bg-green-300 p-1 hover:bg-green-900"
-              onClick={(e) => handleCommit(e)}
-              type="submit"
-            >
-              Save
-            </button>
-            <button
-              className="rounded-md border-[1px] border-black bg-red-400 p-1 hover:bg-red-900"
-              onClick={() => handleCancel()}
-            >
-              Cancel
-            </button>
-          </div>
+          {currentMode === 'playground' ? (
+            <div className="flex flex-row justify-between">
+              <button
+                className="rounded-md border-[1px] border-black bg-green-300 p-1 hover:bg-green-900"
+                onClick={(e) => handleCommit(e)}
+                type="submit"
+              >
+                Save
+              </button>
+              <button
+                className="rounded-md border-[1px] border-black bg-red-400 p-1 hover:bg-red-900"
+                onClick={(e) => handleCancel(e)}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </form>
       </Popup>
     </Polygon>
